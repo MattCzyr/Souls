@@ -16,10 +16,6 @@ string.Souls.soulIdentifier.desc=Utilisez l'Identificateur de Ame sur une Ame po
 string.Souls.pickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite). Clic-droit tout en se faufilant avec des Perles de Ender dans votre inventaire pour reconstituer les frais.
 string.Souls.creativePickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite).
 
-# STRINGS - SUBTITLES
-string.Souls.pickpocketSuccess=A vole avec succes
-string.Souls.identifierUse=Utiliser l'Identificateur de Ame
-
 # STRINGS - MISC
 string.Souls.charges=Frais
 string.years=annees

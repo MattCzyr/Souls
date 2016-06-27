@@ -8,19 +8,21 @@ import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.event.SoulsEventHandler;
 import com.chaosthedude.souls.proxy.CommonProxy;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.10]")
+@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.7.10]")
 
 public class Souls {
 
@@ -36,10 +38,8 @@ public class Souls {
 	@EventHandler
 	public void init(FMLPreInitializationEvent event) {
 		SoulsItems.register();
-		SoulsSounds.register();
 
 		proxy.registerRenderers();
-		proxy.registerModels();
 
 		MinecraftForge.EVENT_BUS.register(new SoulsEventHandler());
 
@@ -54,11 +54,13 @@ public class Souls {
 	}
 
 	public static void registerRecipes() {
-		GameRegistry.addShapelessRecipe(new ItemStack(SoulsItems.soulIdentifier, 1), new ItemStack(Items.BOOK, 1), new ItemStack(Items.ENDER_PEARL));
-		GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.enderJewel), " D ", "DPD", " D ", 'D', Items.DIAMOND, 'P', Items.ENDER_PEARL);
+		GameRegistry.addShapelessRecipe(new ItemStack(SoulsItems.soulIdentifier, 1), new ItemStack(Items.book, 1), new ItemStack(Items.ender_pearl));
 
-		if (!ConfigHandler.pickpocketGauntletLoot) {
-			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.pickpocketGauntlet), "II ", "IJI", " IB", 'I', Items.IRON_INGOT, 'J', SoulsItems.enderJewel, 'B', Blocks.IRON_BLOCK);
+		if (ConfigHandler.pickpocketGauntletLoot) {
+			ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(SoulsItems.pickpocketGauntlet, 1, 16), 1, 1, 5));
+		} else {
+			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.pickpocketGauntlet), "II ", "IJI", " IB", 'I', Items.iron_ingot, 'J', SoulsItems.enderJewel, 'B', Blocks.iron_block);
+			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.enderJewel), " D ", "DPD", " D ", 'D', Items.diamond, 'P', Items.ender_pearl);
 		}
 	}
 

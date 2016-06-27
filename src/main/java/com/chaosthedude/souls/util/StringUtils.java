@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class StringUtils {
 
@@ -63,8 +63,8 @@ public class StringUtils {
 		return getTimeSince(new Date(millis));
 	}
 
-	public static String localize(String unlocString, Object... args) {
-		return I18n.format(unlocString, args);
+	public static String localize(String unlocString) {
+		return StatCollector.translateToLocal(unlocString);
 	}
 
 	public static String getLocalizedSingularForm(String unlocString) {
@@ -92,7 +92,7 @@ public class StringUtils {
 	}
 
 	public static List<String> parseStringIntoLength(String s, int length) {
-		List<String> parsedStrings = new ArrayList<String>();
+		final List<String> parsedStrings = new ArrayList<String>();
 		String line = "";
 		boolean addedPrev = false;
 		for (String word : splitWords(s)) {
@@ -115,7 +115,7 @@ public class StringUtils {
 
 	public static boolean holdShiftForInfo(List info) {
 		if (!GuiScreen.isShiftKeyDown()) {
-			info.add(TextFormatting.DARK_GRAY.toString() + TextFormatting.ITALIC.toString() + "Hold Shift for more info");
+			info.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC.toString() + "Hold Shift for more info");
 			return false;
 		}
 

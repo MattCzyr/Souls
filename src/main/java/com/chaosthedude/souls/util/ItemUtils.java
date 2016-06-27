@@ -10,15 +10,14 @@ import com.google.common.collect.Multimap;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 
 public class ItemUtils {
 
-	public static ItemStack getRandomArmor(EntityEquipmentSlot armorType, Random rand, List<ItemStack> items) {
+	public static ItemStack getRandomArmor(int armorType, Random rand, List<ItemStack> items) {
 		if (items.isEmpty()) {
 			return null;
 		}
@@ -26,7 +25,7 @@ public class ItemUtils {
 		final List<ItemStack> armors = new ArrayList<ItemStack>();
 		for (ItemStack stack : items) {
 			if (stack != null && stack.getItem() instanceof ItemArmor) {
-				ItemArmor armor = (ItemArmor) stack.getItem();
+				final ItemArmor armor = (ItemArmor) stack.getItem();
 				if (armor.armorType == armorType) {
 					armors.add(stack);
 				}
@@ -40,7 +39,7 @@ public class ItemUtils {
 		return null;
 	}
 
-	public static ItemStack getHighestProtectionArmor(EntityEquipmentSlot armorType, List<ItemStack> items) {
+	public static ItemStack getHighestProtectionArmor(int armorType, List<ItemStack> items) {
 		if (items.isEmpty()) {
 			return null;
 		}
@@ -49,7 +48,7 @@ public class ItemUtils {
 		int bestProtection = -1;
 		for (ItemStack stack : items) {
 			if (stack != null && stack.getItem() instanceof ItemArmor) {
-				ItemArmor armor = (ItemArmor) stack.getItem();
+				final ItemArmor armor = (ItemArmor) stack.getItem();
 				if (armor.armorType == armorType) {
 					if (bestArmor == null || armor.damageReduceAmount > bestProtection) {
 						bestArmor = stack;
@@ -62,7 +61,7 @@ public class ItemUtils {
 		return bestArmor;
 	}
 
-	public static ItemStack getRandomWeaponForHand(EntityEquipmentSlot hand, Random rand, List<ItemStack> items) {
+	public static ItemStack getRandomWeapon(Random rand, List<ItemStack> items) {
 		if (items.isEmpty()) {
 			return null;
 		}
@@ -70,7 +69,7 @@ public class ItemUtils {
 		List<ItemStack> weapons = new ArrayList<ItemStack>();
 		for (ItemStack stack : items) {
 			if (stack != null) {
-				double damage = getDamageDealtBy(stack, hand);
+				final double damage = getDamageDealtBy(stack);
 				if (damage > 1) {
 					weapons.add(stack);
 				}
@@ -84,7 +83,7 @@ public class ItemUtils {
 		return (ItemStack) getRandomListItem(rand, items);
 	}
 
-	public static ItemStack getHighestDamageItemForHand(EntityEquipmentSlot hand, List<ItemStack> items) {
+	public static ItemStack getHighestDamageItem(List<ItemStack> items) {
 		ItemStack highestDamageItem = null;
 		double highestDamage = -1D;
 		for (ItemStack stack : items) {
@@ -92,7 +91,7 @@ public class ItemUtils {
 				if (highestDamageItem == null) {
 					highestDamageItem = stack;
 				} else {
-					double damage = getDamageDealtBy(stack, hand);
+					final double damage = getDamageDealtBy(stack);
 					if (damage > highestDamage) {
 						highestDamage = damage;
 						highestDamageItem = stack;
@@ -104,13 +103,13 @@ public class ItemUtils {
 		return highestDamageItem;
 	}
 
-	public static double getDamageDealtBy(ItemStack stack, EntityEquipmentSlot hand) {
+	public static double getDamageDealtBy(ItemStack stack) {
 		double damage = -1D;
-		Multimap attributes = stack.getAttributeModifiers(hand);
-		Collection collection = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
+		final Multimap attributes = stack.getAttributeModifiers();
+		final Collection collection = attributes.get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
 		for (Object o : collection) {
 			if (o instanceof AttributeModifier) {
-				AttributeModifier modifier = (AttributeModifier) o;
+				final AttributeModifier modifier = (AttributeModifier) o;
 				if (modifier.getName().equals(Strings.ATTACK_DAMAGE) || modifier.getName().equals(Strings.WEAPON_MODIFIER) || modifier.getName().equals(Strings.TOOL_MODIFIER)) {
 					damage = modifier.getAmount();
 				}
@@ -160,8 +159,8 @@ public class ItemUtils {
 	}
 
 	public static void addItemDesc(List info, String desc, Object... args) {
-		for (String s : StringUtils.parseStringIntoLength(StringUtils.localize(desc, args), 25)) {
-			info.add(TextFormatting.GRAY.toString() + s);
+		for (String s : StringUtils.parseStringIntoLength(String.format(StringUtils.localize(desc), args), 25)) {
+			info.add(EnumChatFormatting.GRAY.toString() + s);
 		}
 	}
 

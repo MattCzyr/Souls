@@ -4,9 +4,9 @@ import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.items.ItemPickpocketGauntlet;
 import com.chaosthedude.souls.items.ItemSoulIdentifier;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SoulsItems {
 
@@ -18,21 +18,16 @@ public class SoulsItems {
 	public static void register() {
 		init();
 
-		registerItem(creativePickpocketGauntlet, creativePickpocketGauntlet.name);
-		registerItem(pickpocketGauntlet, pickpocketGauntlet.name);
-		registerItem(enderJewel, "EnderJewel");
-		registerItem(soulIdentifier, soulIdentifier.NAME);
-	}
-
-	public static void registerItem(Item item, String name) {
-		item.setRegistryName(name);
-		GameRegistry.register(item);
+		GameRegistry.registerItem(creativePickpocketGauntlet, creativePickpocketGauntlet.name);
+		GameRegistry.registerItem(pickpocketGauntlet, pickpocketGauntlet.name);
+		GameRegistry.registerItem(enderJewel, "EnderJewel");
+		GameRegistry.registerItem(soulIdentifier, soulIdentifier.NAME);
 	}
 
 	private static void init() {
 		creativePickpocketGauntlet = new ItemPickpocketGauntlet(9999, 100.0D, "CreativePickpocketGauntlet");
 		pickpocketGauntlet = new ItemPickpocketGauntlet(16, ConfigHandler.pickpocketSuccessRate, "PickpocketGauntlet");
-		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".EnderJewel").setCreativeTab(CreativeTabs.MATERIALS);
+		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".EnderJewel").setTextureName(Souls.MODID + ":EnderJewel").setCreativeTab(CreativeTabs.tabMaterials);
 		soulIdentifier = new ItemSoulIdentifier();
 	}
 

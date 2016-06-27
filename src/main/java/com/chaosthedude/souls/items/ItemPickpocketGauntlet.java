@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.chaosthedude.souls.Souls;
 import com.chaosthedude.souls.SoulsItems;
-import com.chaosthedude.souls.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.util.ItemUtils;
@@ -18,12 +17,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemPickpocketGauntlet extends Item {
@@ -37,25 +32,26 @@ public class ItemPickpocketGauntlet extends Item {
 		this.name = name;
 
 		setUnlocalizedName(Souls.MODID + "." + name);
+		setTextureName(Souls.MODID + ":" + name);
 		setMaxStackSize(1);
 		setNoRepair();
 		setMaxCharges(maxCharges);
 		setSuccessRate(successRate);
-		setCreativeTab(CreativeTabs.TOOLS);
+		setCreativeTab(CreativeTabs.tabTools);
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		if (stack.getItem() == SoulsItems.creativePickpocketGauntlet) {
-			return EnumRarity.EPIC;
+			return EnumRarity.epic;
 		}
 
-		return EnumRarity.RARE;
+		return EnumRarity.rare;
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
-		info.add(TextFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getCharges(stack));
+		info.add(EnumChatFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getCharges(stack));
 		if (StringUtils.holdShiftForInfo(info)) {
 			if (stack.getItem() == SoulsItems.pickpocketGauntlet) {
 				ItemUtils.addItemDesc(info, Strings.PICKPOCKET_GAUNTLET, MathHelper.floor_double(ConfigHandler.pickpocketSuccessRate) + "%");
@@ -66,17 +62,21 @@ public class ItemPickpocketGauntlet extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		return recharge(player, stack);
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+		if (player.isSneaking()) {
+			return recharge(player, stack);
+		}
+
+		return false;
 	}
 
-	public void pickpocket(EntityPlayer player, ItemStack stack, EntitySoul soul) {
-		if (player == null || player.isSneaking() || soul == null || soul.items.isEmpty() || !(stack.getItem() instanceof ItemPickpocketGauntlet) || !soul.canInteract(player)) {
+	public void pickpocket(EntityPlayer player, EntitySoul soul) {
+		if (player == null || player.isSneaking() || soul == null || soul.items.isEmpty() || !(player.getHeldItem().getItem() instanceof ItemPickpocketGauntlet) || !soul.canInteract(player)) {
 			return;
 		}
 
-		final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) stack.getItem();
-		if (!pickpocketGauntlet.hasCharges(stack)) {
+		final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) player.getHeldItem().getItem();
+		if (!pickpocketGauntlet.hasCharges(player.getHeldItem())) {
 			return;
 		}
 
@@ -92,12 +92,12 @@ public class ItemPickpocketGauntlet extends Item {
 		boolean success = false;
 		if (itemToGet < soul.items.size()) {
 			for (int i = 0; i < soul.items.size(); i++) {
-				ItemStack soulStack = soul.items.get(i);
-				if (soulStack != null && itemToGet == itemCount) {
+				ItemStack stack = soul.items.get(i);
+				if (stack != null && itemToGet == itemCount) {
 					success = true;
-					player.inventory.addItemStackToInventory(soulStack);
+					player.inventory.addItemStackToInventory(stack);
 					soul.removeItemInSlot(i);
-					PlayerUtils.playSoundAtPlayer(player, SoulsSounds.pickpocket);
+					PlayerUtils.playSoundAtPlayer(player, "pickpocketGauntlet.success");
 					break;
 				}
 
@@ -109,21 +109,21 @@ public class ItemPickpocketGauntlet extends Item {
 			soul.setAttackTarget(player);
 		}
 
-		pickpocketGauntlet.useCharge(player, stack);
+		pickpocketGauntlet.useCharge(player, player.getHeldItem());
 	}
 
-	public EnumActionResult recharge(EntityPlayer player, ItemStack stack) {
+	public boolean recharge(EntityPlayer player, ItemStack stack) {
 		if (player == null || !player.isSneaking() || player.capabilities.isCreativeMode || stack == null || stack.getItem() != SoulsItems.pickpocketGauntlet || getCharges(stack) == 16) {
-			return EnumActionResult.PASS;
+			return false;
 		}
 
 		for (int i = 0; i < player.inventory.mainInventory.length; i++) {
 			if (getCharges(stack) == maxCharges) {
-				return EnumActionResult.SUCCESS;
+				return true;
 			}
 
-			ItemStack invStack = player.inventory.mainInventory[i];
-			if (invStack != null && invStack.getItem() == Items.ENDER_PEARL) {
+			final ItemStack invStack = player.inventory.mainInventory[i];
+			if (invStack != null && invStack.getItem() == Items.ender_pearl) {
 				if (getEmptyCharges(stack) < invStack.stackSize) {
 					player.inventory.decrStackSize(i, getEmptyCharges(stack));
 					addCharges(getEmptyCharges(stack), stack);
@@ -134,7 +134,7 @@ public class ItemPickpocketGauntlet extends Item {
 			}
 		}
 
-		return EnumActionResult.SUCCESS;
+		return true;
 	}
 
 	public void addCharges(int amount, ItemStack stack) {

@@ -62,7 +62,7 @@ public class SoulsEventHandler {
 
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		final Equipment equipment = new Equipment();
-
+		
 		equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
 		for (int i = 0; i <= 3; i++) {
 			final ItemStack stack = player.inventory.armorInventory[i];

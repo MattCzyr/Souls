@@ -4,7 +4,7 @@
   "name": "Souls",
   "description": "Spawns a angry Soul that steals your inventory when you die. Good luck!",
   "version": "1.0.0",
-  "mcversion": "1.10",
+  "mcversion": "1.9.4",
   "url": "",
   "updateUrl": "",
   "authorList": ["ChaosTheDude"],

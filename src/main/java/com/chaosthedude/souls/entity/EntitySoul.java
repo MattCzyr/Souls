@@ -126,8 +126,7 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	protected void dropEquipment(boolean par1, int par2) {
-	};
+	protected void dropEquipment(boolean par1, int par2) {};
 
 	@Override
 	protected void damageEntity(DamageSource source, float par1) {

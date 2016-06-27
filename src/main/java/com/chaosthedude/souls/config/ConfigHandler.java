@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.chaosthedude.souls.Souls;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -32,7 +33,7 @@ public class ConfigHandler {
 		config.load();
 		init();
 
-		FMLCommonHandler.instance().bus().register(new ChangeListener());
+		MinecraftForge.EVENT_BUS.register(new ChangeListener());
 	}
 
 	public static void init() {
@@ -78,13 +79,13 @@ public class ConfigHandler {
 
 	public static boolean loadBool(String name, String comment, boolean def) {
 		Property prop = config.get(Configuration.CATEGORY_GENERAL, name, def);
-		prop.setComment(comment);
+		prop.comment = comment;
 		return prop.getBoolean(def);
 	}
 
 	public static double loadDouble(String name, String comment, double def) {
 		Property prop = config.get(Configuration.CATEGORY_GENERAL, name, def);
-		prop.setComment(comment);
+		prop.comment = comment;
 		double val = prop.getDouble(def);
 		if (val == 0) {
 			val = def;
@@ -97,7 +98,7 @@ public class ConfigHandler {
 	public static class ChangeListener {
 		@SubscribeEvent
 		public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-			if (eventArgs.getModID().equals(Souls.MODID)) {
+			if (eventArgs.modID.equals(Souls.MODID)) {
 				init();
 			}
 		}

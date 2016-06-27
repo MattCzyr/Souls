@@ -1,6 +1,5 @@
 package com.chaosthedude.souls.util;
 
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
   /* * * * * * * * * * * * ARMOR INDEXES CHART * * * * * * * * * * * * * * * *\
@@ -13,27 +12,25 @@ import net.minecraft.item.ItemStack;
 
 public class Equipment {
 
-	public static final int MAINHAND = 0;
+	public static final int WEAPON = 0;
 	public static final int BOOTS = 1;
 	public static final int LEGGINGS = 2;
 	public static final int CHESTPLATE = 3;
 	public static final int HELMET = 4;
-	public static final int OFFHAND = 5;
 
-	public ItemStack mainhand;
+	public ItemStack weapon;
 	public ItemStack boots;
 	public ItemStack leggings;
 	public ItemStack chestplate;
 	public ItemStack helmet;
-	public ItemStack offhand;
 
 	public Equipment() {
 	}
 
 	public void set(int index, ItemStack stack) {
 		switch (index) {
-		case MAINHAND:
-			mainhand = stack;
+		case WEAPON:
+			weapon = stack;
 		case BOOTS:
 			boots = stack;
 		case LEGGINGS:
@@ -42,15 +39,13 @@ public class Equipment {
 			chestplate = stack;
 		case HELMET:
 			helmet = stack;
-		case OFFHAND:
-			offhand = stack;
 		}
 	}
 
 	public ItemStack getEquipmentFromIndex(int index) {
 		switch (index) {
-		case MAINHAND:
-			return mainhand;
+		case WEAPON:
+			return weapon;
 		case BOOTS:
 			return boots;
 		case LEGGINGS:
@@ -59,8 +54,6 @@ public class Equipment {
 			return chestplate;
 		case HELMET:
 			return helmet;
-		case OFFHAND:
-			return offhand;
 
 		default:
 			return null;
@@ -77,24 +70,6 @@ public class Equipment {
 
 	public static int getEquipmentIndexFromArmorType(int armorType) {
 		return 4 - armorType;
-	}
-
-	public static EntityEquipmentSlot getSlotFromEquipmentIndex(int index) {
-		if (index == EntityEquipmentSlot.MAINHAND.getSlotIndex()) {
-			return EntityEquipmentSlot.MAINHAND;
-		} else if (index == EntityEquipmentSlot.FEET.getSlotIndex()) {
-			return EntityEquipmentSlot.FEET;
-		} else if (index == EntityEquipmentSlot.LEGS.getSlotIndex()) {
-			return EntityEquipmentSlot.LEGS;
-		} else if (index == EntityEquipmentSlot.CHEST.getSlotIndex()) {
-			return EntityEquipmentSlot.CHEST;
-		} else if (index == EntityEquipmentSlot.HEAD.getSlotIndex()) {
-			return EntityEquipmentSlot.HEAD;
-		} else if (index == EntityEquipmentSlot.OFFHAND.getSlotIndex()) {
-			return EntityEquipmentSlot.OFFHAND;
-		}
-
-		return null;
 	}
 
 }

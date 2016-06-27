@@ -11,6 +11,8 @@ import com.chaosthedude.souls.proxy.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,13 +22,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.9,1.9.4]")
+@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.8,1.8.9]")
 
 public class Souls {
 
 	public static final String MODID = "Souls";
 	public static final String NAME = "Souls";
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.0.1";
 
 	public static final Logger logger = LogManager.getLogger(MODID);
 
@@ -36,7 +38,6 @@ public class Souls {
 	@EventHandler
 	public void init(FMLPreInitializationEvent event) {
 		SoulsItems.register();
-		SoulsSounds.register();
 
 		proxy.registerRenderers();
 		proxy.registerModels();
@@ -54,12 +55,14 @@ public class Souls {
 	}
 
 	public static void registerRecipes() {
-		GameRegistry.addShapelessRecipe(new ItemStack(SoulsItems.soulIdentifier, 1), new ItemStack(Items.BOOK, 1), new ItemStack(Items.ENDER_PEARL));
-		GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.enderJewel), " D ", "DPD", " D ", 'D', Items.DIAMOND, 'P', Items.ENDER_PEARL);
+		GameRegistry.addShapelessRecipe(new ItemStack(SoulsItems.soulIdentifier, 1), new ItemStack(Items.book, 1), new ItemStack(Items.ender_pearl));
 
-		if (!ConfigHandler.pickpocketGauntletLoot) {
-			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.pickpocketGauntlet), "II ", "IJI", " IB", 'I', Items.IRON_INGOT, 'J', SoulsItems.enderJewel, 'B', Blocks.IRON_BLOCK);
+		if (ConfigHandler.pickpocketGauntletLoot) {
+			ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(SoulsItems.pickpocketGauntlet, 1, 16), 1, 1, 5));
+		} else {
+			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.pickpocketGauntlet), "II ", "IJI", " IB", 'I', Items.iron_ingot, 'J', SoulsItems.enderJewel, 'B', Blocks.iron_block);
+			GameRegistry.addShapedRecipe(new ItemStack(SoulsItems.enderJewel), " D ", "DPD", " D ", 'D', Items.diamond, 'P', Items.ender_pearl);
 		}
-	}
+	}	
 
 }

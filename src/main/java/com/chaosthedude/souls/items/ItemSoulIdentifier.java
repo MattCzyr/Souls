@@ -19,7 +19,7 @@ public class ItemSoulIdentifier extends Item {
 	public ItemSoulIdentifier() {
 		setUnlocalizedName(Souls.MODID + "." + NAME);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.TOOLS);
+		setCreativeTab(CreativeTabs.tabTools);
 	}
 
 	@Override

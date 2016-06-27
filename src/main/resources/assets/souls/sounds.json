@@ -1,15 +1,15 @@
 {
-    "Souls:identifier": {
+    "soulIdentifier.use": {
         "category": "ambient",
         "sounds": [
-			"Souls:identifier"
+            "identifier"
         ]
     },
 		
-	"Souls:pickpocket": {
+	"pickpocketGauntlet.success": {
         "category": "ambient",
         "sounds": [
-			"Souls:pickpocket"
+            "pickpocket"
         ]
     }
 }

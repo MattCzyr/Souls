@@ -19,11 +19,10 @@ public class RenderSoul extends RenderBiped<EntitySoul> {
 		addLayer(new LayerHeldItem(this));
 		addLayer(new LayerBipedArmor(this) {
 			protected void initArmor() {
-				modelLeggings = new ModelSoul(0.5F, true);
-				modelArmor = new ModelSoul(1.0F, true);
+				field_177189_c = new ModelSoul(0.5F, true);
+				field_177186_d = new ModelSoul(1.0F, true);
 			}
 		});
-
 	}
 
 	@Override

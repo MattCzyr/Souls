@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.chaosthedude.souls.SoulsItems;
-import com.chaosthedude.souls.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.items.ItemPickpocketGauntlet;
 import com.chaosthedude.souls.util.Equipment;
@@ -16,28 +15,24 @@ import com.chaosthedude.souls.util.StringUtils;
 import com.chaosthedude.souls.util.Strings;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class EntitySoul extends EntityMob {
+public class EntitySoul extends EntityMob implements IBossDisplayData {
 
 	public static final double MAX_HEALTH = 20.0D;
 	public static final double MOVEMENT_SPEED = 0.35D;
@@ -52,7 +47,7 @@ public class EntitySoul extends EntityMob {
 		super(world);
 
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIAttackMelee(this, 1.2D, true));
+		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 		tasks.addTask(2, new EntityAIMoveTowardsRestriction(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 
@@ -63,7 +58,7 @@ public class EntitySoul extends EntityMob {
 		experienceValue = 0;
 
 		setCanPickUpLoot(false);
-		setSize(0.6F, 1.8F);
+		setSize(0.6F, 2.0F);
 	}
 
 	public EntitySoul(EntityPlayer player, List<ItemStack> items) {
@@ -92,8 +87,8 @@ public class EntitySoul extends EntityMob {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(MOVEMENT_SPEED);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(MOVEMENT_SPEED);
 	}
 
 	@Override
@@ -107,13 +102,18 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
-		return SoundEvents.ENTITY_SKELETON_HURT;
+	protected String getLivingSound() {
+		return "mob.skeleton.say";
 	}
 
 	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SKELETON_DEATH;
+	protected String getHurtSound() {
+		return "mob.skeleton.hurt";
+	}
+
+	@Override
+	protected String getDeathSound() {
+		return "mob.skeleton.death";
 	}
 
 	@Override
@@ -152,30 +152,25 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-		if (stack != null) {
-			if (stack.getItem() instanceof ItemPickpocketGauntlet) {
-				final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) stack.getItem();
-				pickpocketGauntlet.pickpocket(player, stack, this);
+	protected boolean interact(EntityPlayer player) {
+		if (player.getHeldItem() != null) {
+			if (player.getHeldItem().getItem() instanceof ItemPickpocketGauntlet) {
+				final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) player.getHeldItem().getItem();
+				pickpocketGauntlet.pickpocket(player, this);
 
 				return true;
-			} else if (!player.worldObj.isRemote && stack.getItem() == SoulsItems.soulIdentifier) {
-				PlayerUtils.playSoundAtPlayer(player, SoulsSounds.identifier);
-				player.addChatMessage(getSoulInfoTextComponent());
+			} else if (!player.worldObj.isRemote && player.getHeldItem().getItem() == SoulsItems.soulIdentifier) {
+				PlayerUtils.playSoundAtPlayer(player, "soulIdentifier.use");
+				player.addChatMessage(getSoulInfoChatComponent());
 
 				return true;
 			}
 		} else if (!player.worldObj.isRemote && !ConfigHandler.requireSoulIdentifier) {
-			player.addChatMessage(getSoulInfoTextComponent());
+			player.addChatMessage(getSoulInfoChatComponent());
 
 			return true;
 		}
 
-		return false;
-	}
-
-	@Override
-	public boolean isNonBoss() {
 		return false;
 	}
 
@@ -229,8 +224,8 @@ public class EntitySoul extends EntityMob {
 		}
 	}
 
-	public void spawnInWorld(World world) {
-		final EntityPlayer player = world.getPlayerEntityByUUID(playerID);
+	public void spawnInWorld() {
+		final EntityPlayer player = worldObj.getPlayerEntityByUUID(playerID);
 		if (player != null) {
 			setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
 			player.worldObj.spawnEntityInWorld(this);
@@ -240,7 +235,7 @@ public class EntitySoul extends EntityMob {
 	public int getNumItemsHeld() {
 		int amount = items.size();
 		for (int i = 0; i <= 4; i++) {
-			if (getItemStackFromSlot(Equipment.getSlotFromEquipmentIndex(i)) != null) {
+			if (getEquipmentInSlot(i) != null) {
 				amount++;
 			}
 		}
@@ -254,7 +249,7 @@ public class EntitySoul extends EntityMob {
 
 	public void clearEquipment() {
 		for (int i = 0; i <= 4; i++) {
-			setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), null);
+			setCurrentItemOrArmor(i, null);
 		}
 	}
 
@@ -270,9 +265,9 @@ public class EntitySoul extends EntityMob {
 		final ItemStack stack = items.get(slot);
 		items.remove(slot);
 		for (int i = 0; i <= 4; i++) {
-			final ItemStack equipment = getItemStackFromSlot(Equipment.getSlotFromEquipmentIndex(i));
+			final ItemStack equipment = getEquipmentInSlot(i);
 			if (equipment != null && equipment.isItemEqual(stack)) {
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), null);
+				setCurrentItemOrArmor(i, null);
 				return;
 			}
 		}
@@ -304,14 +299,12 @@ public class EntitySoul extends EntityMob {
 		clearEquipment();
 	}
 
-	protected TextComponentString getSoulInfoTextComponent() {
-		final TextComponentString soulInfo = new TextComponentString(parseSoulInfo());
-		soulInfo.setStyle(new Style().setItalic(true).setColor(TextFormatting.GRAY));
-		return soulInfo;
+	protected ChatComponentText getSoulInfoChatComponent() {
+		return (ChatComponentText) new ChatComponentText(parseSoulInfo()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true));
 	}
 
 	protected String parseSoulInfo() {
-		return StringUtils.localize(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
+		return String.format(StringUtils.localize(Strings.SOUL_INFO), playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {
@@ -322,27 +315,24 @@ public class EntitySoul extends EntityMob {
 		ItemStack armor = null;
 		for (int i = 0; i <= 3; i++) {
 			if (ConfigHandler.useBestEquipment) {
-				armor = ItemUtils.getHighestProtectionArmor(Equipment.getSlotFromEquipmentIndex(i), items);
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(4 - i), armor);
+				armor = ItemUtils.getHighestProtectionArmor(i, items);
+				setCurrentItemOrArmor(4 - i, armor);
 			} else if (equipment != null) {
 				armor = equipment.getEquipmentFromIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i));
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
+				setCurrentItemOrArmor(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), armor);
 			}
 		}
 	}
 
 	protected void setupWeapon(Equipment equipment) {
-		ItemStack mainhand = null;
-		ItemStack offhand = null;
+		ItemStack weapon = null;
 		if (ConfigHandler.useBestEquipment) {
-			mainhand = ItemUtils.getHighestDamageItemForHand(EntityEquipmentSlot.MAINHAND, items);
+			weapon = ItemUtils.getHighestDamageItem(items);
 		} else if (equipment != null) {
-			mainhand = equipment.getEquipmentFromIndex(Equipment.MAINHAND);
-			offhand = equipment.getEquipmentFromIndex(Equipment.OFFHAND);
+			weapon = equipment.getEquipmentFromIndex(Equipment.WEAPON);
 		}
 
-		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, mainhand);
-		setItemStackToSlot(EntityEquipmentSlot.OFFHAND, offhand);
+		setCurrentItemOrArmor(Equipment.WEAPON, weapon);
 	}
 
 	private void setupEquipment(Equipment equipment) {
@@ -351,7 +341,7 @@ public class EntitySoul extends EntityMob {
 			setupWeapon(equipment);
 
 			for (int i = 0; i <= 4; i++) {
-				setDropChance(Equipment.getSlotFromEquipmentIndex(i), 0.0F);
+				setEquipmentDropChance(i, 0.0F);
 			}
 		}
 	}

@@ -18,21 +18,16 @@ public class SoulsItems {
 	public static void register() {
 		init();
 
-		registerItem(creativePickpocketGauntlet, creativePickpocketGauntlet.name);
-		registerItem(pickpocketGauntlet, pickpocketGauntlet.name);
-		registerItem(enderJewel, "EnderJewel");
-		registerItem(soulIdentifier, soulIdentifier.NAME);
-	}
-
-	public static void registerItem(Item item, String name) {
-		item.setRegistryName(name);
-		GameRegistry.register(item);
+		GameRegistry.registerItem(creativePickpocketGauntlet, creativePickpocketGauntlet.name);
+		GameRegistry.registerItem(pickpocketGauntlet, pickpocketGauntlet.name);
+		GameRegistry.registerItem(enderJewel, "EnderJewel");
+		GameRegistry.registerItem(soulIdentifier, soulIdentifier.NAME);
 	}
 
 	private static void init() {
 		creativePickpocketGauntlet = new ItemPickpocketGauntlet(9999, 100.0D, "CreativePickpocketGauntlet");
 		pickpocketGauntlet = new ItemPickpocketGauntlet(16, ConfigHandler.pickpocketSuccessRate, "PickpocketGauntlet");
-		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".EnderJewel").setCreativeTab(CreativeTabs.MATERIALS);
+		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".EnderJewel").setCreativeTab(CreativeTabs.tabMaterials);
 		soulIdentifier = new ItemSoulIdentifier();
 	}
 

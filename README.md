@@ -1,4 +1,4 @@
-# Realistic Torches
+# Souls
 
 Souls is a hardcore revision to post-death inventory storage. After you die, an angry Soul that holds your inventory will spawn.
 

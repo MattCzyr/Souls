@@ -1,0 +1,15 @@
+{
+    "Souls:identifier": {
+        "category": "ambient",
+        "sounds": [
+			"Souls:identifier"
+        ]
+    },
+		
+	"Souls:pickpocket": {
+        "category": "ambient",
+        "sounds": [
+			"Souls:pickpocket"
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+# Souls - Language File
+# SPAIN - SPANISH
+
+# ENTITIES
+entity.Souls.Soul.name=Alma
+
+# ITEMS
+item.Souls.PickpocketGauntlet.name=Guante de Ladron
+item.Souls.CreativePickpocketGauntlet.name=Guante de Ladron Creativa
+item.Souls.SoulIdentifier.name=Identificador Alma
+item.Souls.EnderJewel.name=Joya de Ender
+
+# STRINGS - ITEM DESCS
+string.Souls.identifier=Esta Alma pertenece a %s, que murio hace %s, y actualmente se esta llevando a cabo artículos %s.
+string.Souls.soulIdentifier.desc=Utilice el Identificador Alma en un Alma para ver la informacion sobre el.
+string.Souls.pickpocketGauntlet.desc=Utilice Guante de Ladron en un Alma para intentar robar artículos de la misma (%s tasa de éxito). Haga clic mientras mira con perlas de Ender en su inventario para reponer los cargos.
+string.Souls.creativePickpocketGauntlet.desc=Utilice Guante de Ladron en un Alma para intentar robar artículos de la misma (%s% tasa de éxito).
+
+# STRINGS - SUBTITLES
+string.Souls.pickpocketSuccess=Robó éxito
+string.Souls.identifierUse=Utilizado Identificador Alma
+
+# STRINGS - MISC
+string.Souls.charges=Cargos
+string.years=anos
+string.months=meses
+string.weeks=semanas
+string.days=días
+string.hours=horas
+string.minutes=minutos
+string.seconds=segundos
+string.and=y

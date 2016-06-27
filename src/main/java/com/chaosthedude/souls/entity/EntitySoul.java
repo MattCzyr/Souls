@@ -63,7 +63,7 @@ public class EntitySoul extends EntityMob {
 		experienceValue = 0;
 
 		setCanPickUpLoot(false);
-		setSize(0.6F, 1.8F);
+		setSize(0.6F, 2.0F);
 	}
 
 	public EntitySoul(EntityPlayer player, List<ItemStack> items) {

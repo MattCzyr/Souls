@@ -5,6 +5,7 @@ ehthumbs.db
 # Gradle
 /.gradle
 /build
+*.launch
 
 # ForgeGradle
 /run

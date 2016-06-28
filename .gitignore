@@ -2,6 +2,21 @@
 Thumbs.db
 ehthumbs.db
 
+# Gradle
+/.gradle
+/build
+
+# ForgeGradle
+/run
+
+# Eclipse
+/.settings
+/.metadata
+/.classpath
+/.project
+/eclipse
+/bin
+
 # Folder config file
 Desktop.ini
 
@@ -17,13 +32,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# =========================
-# Operating System Files
-# =========================
-
 # OSX
-# =========================
-
 .DS_Store
 .AppleDouble
 .LSOverride

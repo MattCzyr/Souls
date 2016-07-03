@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.10]")
+@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.10,1.10.2]")
 
 public class Souls {
 

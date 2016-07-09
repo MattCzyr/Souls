@@ -142,12 +142,10 @@ public class EntitySoul extends EntityMob implements IBossDisplayData {
 
 	@Override
 	public void onDeath(DamageSource source) {
-		if (source.getSourceOfDamage() instanceof EntityPlayer || soulShouldDie()) {
-			super.onDeath(source);
+		super.onDeath(source);
 
-			if (!worldObj.isRemote) {
-				dropItems();
-			}
+		if (!worldObj.isRemote) {
+			dropItems();
 		}
 	}
 
@@ -155,7 +153,8 @@ public class EntitySoul extends EntityMob implements IBossDisplayData {
 	protected boolean interact(EntityPlayer player) {
 		if (player.getHeldItem() != null) {
 			if (player.getHeldItem().getItem() instanceof ItemPickpocketGauntlet) {
-				final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) player.getHeldItem().getItem();
+				final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) player.getHeldItem()
+						.getItem();
 				pickpocketGauntlet.pickpocket(player, this);
 
 				return true;
@@ -278,7 +277,8 @@ public class EntitySoul extends EntityMob implements IBossDisplayData {
 	}
 
 	public boolean soulShouldExpire() {
-		if (ConfigHandler.soulsExpiration >= 0.0D && ((double) getMillisAlive() / 3600000) > ConfigHandler.soulsExpiration) {
+		if (ConfigHandler.soulsExpiration >= 0.0D
+				&& ((double) getMillisAlive() / 3600000) > ConfigHandler.soulsExpiration) {
 			return true;
 		}
 
@@ -300,11 +300,13 @@ public class EntitySoul extends EntityMob implements IBossDisplayData {
 	}
 
 	protected ChatComponentText getSoulInfoChatComponent() {
-		return (ChatComponentText) new ChatComponentText(parseSoulInfo()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true));
+		return (ChatComponentText) new ChatComponentText(parseSoulInfo())
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true));
 	}
 
 	protected String parseSoulInfo() {
-		return String.format(StringUtils.localize(Strings.SOUL_INFO), playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
+		return String.format(StringUtils.localize(Strings.SOUL_INFO), playerName, StringUtils.parseDate(dateCreated),
+				getNumItemsHeld());
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {

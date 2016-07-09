@@ -126,8 +126,7 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	protected void dropEquipment(boolean par1, int par2) {
-	};
+	protected void dropEquipment(boolean par1, int par2) {};
 
 	@Override
 	protected void damageEntity(DamageSource source, float par1) {
@@ -143,12 +142,10 @@ public class EntitySoul extends EntityMob {
 
 	@Override
 	public void onDeath(DamageSource source) {
-		if (source.getSourceOfDamage() instanceof EntityPlayer || soulShouldDie()) {
-			super.onDeath(source);
+		super.onDeath(source);
 
-			if (!worldObj.isRemote) {
-				dropItems();
-			}
+		if (!worldObj.isRemote) {
+			dropItems();
 		}
 	}
 
@@ -284,7 +281,8 @@ public class EntitySoul extends EntityMob {
 	}
 
 	public boolean soulShouldExpire() {
-		if (ConfigHandler.soulsExpiration >= 0.0D && ((double) getMillisAlive() / 3600000) > ConfigHandler.soulsExpiration) {
+		if (ConfigHandler.soulsExpiration >= 0.0D
+				&& ((double) getMillisAlive() / 3600000) > ConfigHandler.soulsExpiration) {
 			return true;
 		}
 
@@ -312,7 +310,8 @@ public class EntitySoul extends EntityMob {
 	}
 
 	protected String parseSoulInfo() {
-		return StringUtils.localize(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
+		return StringUtils.localize(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated),
+				getNumItemsHeld());
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {
@@ -327,7 +326,8 @@ public class EntitySoul extends EntityMob {
 				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(4 - i), armor);
 			} else if (equipment != null) {
 				armor = equipment.getEquipmentFromIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i));
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
+				setItemStackToSlot(
+						Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
 			}
 		}
 	}

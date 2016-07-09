@@ -3,7 +3,7 @@
   "modid": "Souls",
   "name": "Souls",
   "description": "Spawns a angry Soul that steals your inventory when you die. Good luck!",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",

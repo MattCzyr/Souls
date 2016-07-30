@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class StringUtils {
 
@@ -64,7 +64,7 @@ public class StringUtils {
 	}
 
 	public static String localize(String unlocString, Object... args) {
-		return I18n.format(unlocString, args);
+		return I18n.translateToLocalFormatted(unlocString, args);
 	}
 
 	public static String getLocalizedSingularForm(String unlocString) {

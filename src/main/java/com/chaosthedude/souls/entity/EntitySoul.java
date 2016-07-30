@@ -30,10 +30,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -126,7 +126,8 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	protected void dropEquipment(boolean par1, int par2) {};
+	protected void dropEquipment(boolean par1, int par2) {
+	};
 
 	@Override
 	protected void damageEntity(DamageSource source, float par1) {
@@ -159,12 +160,12 @@ public class EntitySoul extends EntityMob {
 				return true;
 			} else if (!player.worldObj.isRemote && stack.getItem() == SoulsItems.soulIdentifier) {
 				PlayerUtils.playSoundAtPlayer(player, SoulsSounds.identifier);
-				player.addChatMessage(getSoulInfoTextComponent());
+				player.addChatMessage(parseSoulInfo());
 
 				return true;
 			}
 		} else if (!player.worldObj.isRemote && !ConfigHandler.requireSoulIdentifier) {
-			player.addChatMessage(getSoulInfoTextComponent());
+			player.addChatMessage(parseSoulInfo());
 
 			return true;
 		}
@@ -303,15 +304,10 @@ public class EntitySoul extends EntityMob {
 		clearEquipment();
 	}
 
-	protected TextComponentString getSoulInfoTextComponent() {
-		final TextComponentString soulInfo = new TextComponentString(parseSoulInfo());
+	protected TextComponentTranslation parseSoulInfo() {
+		final TextComponentTranslation soulInfo = new TextComponentTranslation(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
 		soulInfo.setStyle(new Style().setItalic(true).setColor(TextFormatting.GRAY));
 		return soulInfo;
-	}
-
-	protected String parseSoulInfo() {
-		return StringUtils.localize(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated),
-				getNumItemsHeld());
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {

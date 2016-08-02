@@ -3,6 +3,7 @@ package com.chaosthedude.souls;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.chaosthedude.souls.client.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.event.SoulsEventHandler;
@@ -26,7 +27,7 @@ public class Souls {
 
 	public static final String MODID = "Souls";
 	public static final String NAME = "Souls";
-	public static final String VERSION = "1.0.3";
+	public static final String VERSION = "1.1.0";
 
 	public static final Logger logger = LogManager.getLogger(MODID);
 

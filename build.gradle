@@ -19,7 +19,7 @@ plugins {
 }
 */
 
-version = "1.10.2-1.0.3"
+version = "1.10.2-1.1.0"
 group= "com.chaosthedude.souls"
 archivesBaseName = "Souls"
 

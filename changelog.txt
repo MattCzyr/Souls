@@ -1,4 +1,18 @@
 --------------------------------------------------
+ VERSION: 1.1.0 - 1.10.2
+--------------------------------------------------
+1.10.2:
+  FEATURES:
+  - Added a 1 second cooldown to usage of the Pickpocket's Gauntlet
+  - Added a 1 second per-Soul cooldown to usage of the Soul Identifier
+  - Changed Creative Pickpocket's Gauntlet charge display from "9999" to "Infinite"
+  - Edited Pickpocket's Gauntlet, Soul Identifier, and Ender Jewel textures
+  - Added Chinese localization
+  FIXES:
+  - Fixed soul info displaying multiple times when souls.requireSoulIdentifier is disabled
+
+
+--------------------------------------------------
  VERSION: 1.0.3 - 1.10.2
 --------------------------------------------------
 1.10.2:

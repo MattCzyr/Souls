@@ -6,14 +6,13 @@ import java.util.List;
 import java.util.UUID;
 
 import com.chaosthedude.souls.SoulsItems;
-import com.chaosthedude.souls.SoulsSounds;
+import com.chaosthedude.souls.client.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.items.ItemPickpocketGauntlet;
+import com.chaosthedude.souls.items.ItemSoulIdentifier;
 import com.chaosthedude.souls.util.Equipment;
 import com.chaosthedude.souls.util.ItemUtils;
 import com.chaosthedude.souls.util.PlayerUtils;
-import com.chaosthedude.souls.util.StringUtils;
-import com.chaosthedude.souls.util.Strings;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -31,10 +30,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class EntitySoul extends EntityMob {
@@ -44,9 +39,11 @@ public class EntitySoul extends EntityMob {
 
 	public List<ItemStack> items = new ArrayList<ItemStack>();
 
-	private UUID playerID;
-	private String playerName;
-	private long dateCreated;
+	public UUID playerID;
+	public String playerName;
+	public long dateCreated;
+
+	protected int identifierCooldown = 20;
 
 	public EntitySoul(World world) {
 		super(world);
@@ -123,6 +120,10 @@ public class EntitySoul extends EntityMob {
 		if (soulShouldDie()) {
 			attackEntityFrom(DamageSource.generic, getHealth());
 		}
+
+		if (identifierCooldown > 0) {
+			identifierCooldown--;
+		}
 	}
 
 	@Override
@@ -152,20 +153,25 @@ public class EntitySoul extends EntityMob {
 
 	@Override
 	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-		if (stack != null) {
-			if (stack.getItem() instanceof ItemPickpocketGauntlet) {
-				final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) stack.getItem();
-				pickpocketGauntlet.pickpocket(player, stack, this);
+		if (stack != null && stack.getItem() instanceof ItemPickpocketGauntlet) {
+			final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) stack.getItem();
+			pickpocketGauntlet.pickpocket(player, stack, this);
 
-				return true;
-			} else if (!player.worldObj.isRemote && stack.getItem() == SoulsItems.soulIdentifier) {
-				PlayerUtils.playSoundAtPlayer(player, SoulsSounds.identifier);
-				player.addChatMessage(parseSoulInfo());
+			return true;
+		}
 
-				return true;
+		if (!player.worldObj.isRemote && identifierCooldown <= 0) {
+			ItemSoulIdentifier soulIdentifier = null;
+			if (stack != null && stack.getItem() == SoulsItems.soulIdentifier) {
+				soulIdentifier = (ItemSoulIdentifier) stack.getItem();
 			}
-		} else if (!player.worldObj.isRemote && !ConfigHandler.requireSoulIdentifier) {
-			player.addChatMessage(parseSoulInfo());
+
+			if ((ConfigHandler.requireSoulIdentifier && soulIdentifier != null)
+					|| !ConfigHandler.requireSoulIdentifier) {
+				ItemSoulIdentifier.displaySoulInfo(player, this, soulIdentifier);
+			}
+
+			identifierCooldown = 20;
 
 			return true;
 		}
@@ -302,12 +308,6 @@ public class EntitySoul extends EntityMob {
 		}
 
 		clearEquipment();
-	}
-
-	protected TextComponentTranslation parseSoulInfo() {
-		final TextComponentTranslation soulInfo = new TextComponentTranslation(Strings.SOUL_INFO, playerName, StringUtils.parseDate(dateCreated), getNumItemsHeld());
-		soulInfo.setStyle(new Style().setItalic(true).setColor(TextFormatting.GRAY));
-		return soulInfo;
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {

@@ -1,4 +1,4 @@
-package com.chaosthedude.souls.client.renderer.model;
+package com.chaosthedude.souls.client.render.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;

@@ -1,4 +1,6 @@
-package com.chaosthedude.souls;
+package com.chaosthedude.souls.client;
+
+import com.chaosthedude.souls.Souls;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

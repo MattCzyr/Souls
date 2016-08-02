@@ -1,6 +1,6 @@
 package com.chaosthedude.souls.client.render;
 
-import com.chaosthedude.souls.client.renderer.model.ModelSoul;
+import com.chaosthedude.souls.client.render.model.ModelSoul;
 import com.chaosthedude.souls.entity.EntitySoul;
 
 import net.minecraft.client.renderer.GlStateManager;

@@ -1,0 +1,32 @@
+# Souls - Language File
+# CHINA - CHINESE
+
+# ENTITIES
+entity.Souls.Soul.name=再生之魂
+
+# ITEMS
+item.Souls.PickpocketGauntlet.name=盗贼手套
+item.Souls.CreativePickpocketGauntlet.name=创造模式的盗贼手套
+item.Souls.SoulIdentifier.name=灵魂分析器
+item.Souls.EnderJewel.name=末影宝石
+
+# STRINGS - ITEM DESCS
+string.Souls.identifier=这个灵魂来自 %s, 在 %s 以前死亡, 当前拥有 %s 个物品.
+string.Souls.soulIdentifier.desc=用灵魂分析器来看灵魂的信息.
+string.Souls.pickpocketGauntlet.desc=用盗贼手套来尝试偷取灵魂的物品 (%s 的成功率).潜行时右键可以用背包内的末影珍珠充填使用次数.
+string.Souls.creativePickpocketGauntlet.desc=用盗贼手套来尝试偷取灵魂的物品 (%s 的成功率).
+
+# STRINGS - SUBTITLES
+string.Souls.pickpocketSuccess=偷取成功！
+string.Souls.identifierUse=使用灵魂分析器
+
+# STRINGS - MISC
+string.Souls.charges=可使用次数
+string.years=年
+string.months=月
+string.weeks=周
+string.days=日
+string.hours=小时
+string.minutes=分钟
+string.seconds=秒
+string.and=和

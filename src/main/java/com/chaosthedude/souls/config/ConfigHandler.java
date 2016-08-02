@@ -4,10 +4,10 @@ import java.io.File;
 
 import com.chaosthedude.souls.Souls;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigHandler {
@@ -32,7 +32,7 @@ public class ConfigHandler {
 		config.load();
 		init();
 
-		FMLCommonHandler.instance().bus().register(new ChangeListener());
+		MinecraftForge.EVENT_BUS.register(new ChangeListener());
 	}
 
 	public static void init() {

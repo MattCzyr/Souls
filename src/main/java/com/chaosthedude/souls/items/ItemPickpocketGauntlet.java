@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.chaosthedude.souls.Souls;
 import com.chaosthedude.souls.SoulsItems;
-import com.chaosthedude.souls.SoulsSounds;
+import com.chaosthedude.souls.client.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.util.ItemUtils;
@@ -55,7 +55,7 @@ public class ItemPickpocketGauntlet extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
-		info.add(TextFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getCharges(stack));
+		info.add(TextFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getChargesAsString(stack));
 		if (StringUtils.holdShiftForInfo(info)) {
 			if (stack.getItem() == SoulsItems.pickpocketGauntlet) {
 				ItemUtils.addItemDesc(info, Strings.PICKPOCKET_GAUNTLET, MathHelper.floor_double(ConfigHandler.pickpocketSuccessRate) + "%");
@@ -71,7 +71,7 @@ public class ItemPickpocketGauntlet extends Item {
 	}
 
 	public void pickpocket(EntityPlayer player, ItemStack stack, EntitySoul soul) {
-		if (player == null || player.isSneaking() || soul == null || soul.items.isEmpty() || !(stack.getItem() instanceof ItemPickpocketGauntlet) || !soul.canInteract(player)) {
+		if (player == null || player.isSneaking() || isOnCooldown(player) || soul == null || soul.items.isEmpty() || !(stack.getItem() instanceof ItemPickpocketGauntlet) || !soul.canInteract(player)) {
 			return;
 		}
 
@@ -110,6 +110,7 @@ public class ItemPickpocketGauntlet extends Item {
 		}
 
 		pickpocketGauntlet.useCharge(player, stack);
+		player.getCooldownTracker().setCooldown(this, 20);
 	}
 
 	public EnumActionResult recharge(EntityPlayer player, ItemStack stack) {
@@ -152,6 +153,14 @@ public class ItemPickpocketGauntlet extends Item {
 	public int getCharges(ItemStack stack) {
 		return maxCharges - stack.getItemDamage();
 	}
+	public String getChargesAsString(ItemStack stack) {
+		String charges = "Infnite";
+		if (getCharges(stack) < 9999) {
+			charges = String.valueOf(getCharges(stack));
+		}
+		
+		return charges;
+	}
 
 	public int getEmptyCharges(ItemStack stack) {
 		return maxCharges - getCharges(stack);
@@ -159,6 +168,10 @@ public class ItemPickpocketGauntlet extends Item {
 
 	public boolean hasCharges(ItemStack stack) {
 		return getCharges(stack) > 0;
+	}
+
+	public boolean isOnCooldown(EntityPlayer player) {
+		return player.getCooldownTracker().getCooldown(this, 0.0F) > 0.0F;
 	}
 
 	public ItemPickpocketGauntlet setMaxCharges(int amount) {

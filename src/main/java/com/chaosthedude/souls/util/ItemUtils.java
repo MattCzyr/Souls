@@ -3,10 +3,13 @@ package com.chaosthedude.souls.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Multimap;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +17,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.text.TextFormatting;
 
 public class ItemUtils {
@@ -111,7 +117,9 @@ public class ItemUtils {
 		for (Object o : collection) {
 			if (o instanceof AttributeModifier) {
 				AttributeModifier modifier = (AttributeModifier) o;
-				if (modifier.getName().equals(Strings.ATTACK_DAMAGE) || modifier.getName().equals(Strings.WEAPON_MODIFIER) || modifier.getName().equals(Strings.TOOL_MODIFIER)) {
+				if (modifier.getName().equals(Strings.ATTACK_DAMAGE)
+						|| modifier.getName().equals(Strings.WEAPON_MODIFIER)
+						|| modifier.getName().equals(Strings.TOOL_MODIFIER)) {
 					damage = modifier.getAmount();
 				}
 			}
@@ -163,6 +171,57 @@ public class ItemUtils {
 		for (String s : StringUtils.parseStringIntoLength(StringUtils.localize(desc, args), 25)) {
 			info.add(TextFormatting.GRAY.toString() + s);
 		}
+	}
+
+	public static boolean isSoulbound(ItemStack stack) {
+		if (isSoulboundTConstruct(stack) || isSoulboundEnderIO(stack)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isSoulboundTConstruct(ItemStack stack) {
+		if (stack != null) {
+			final NBTTagList tagList = getTagList(getBaseTag(stack.getTagCompound(), "TinkerData"), "Modifiers", new NBTTagString().getId());
+			for (int i = 0; i < tagList.tagCount(); i++) {
+				if (tagList.getStringTagAt(i).equals("soulbound")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean isSoulboundEnderIO(ItemStack stack) {
+		if (stack != null) {
+			Map enchantments = EnchantmentHelper.getEnchantments(stack);
+			for (Object id : enchantments.keySet()) {
+				Enchantment enchantment = Enchantment.getEnchantmentByID((Integer) id);
+				if (enchantment.getName().equals("enchantment.enderio.soulBound")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static NBTTagCompound getBaseTag(NBTTagCompound tag, String key) {
+		if (tag == null || !tag.hasKey(key)) {
+			return new NBTTagCompound();
+		}
+
+		return tag.getCompoundTag(key);
+	}
+
+	public static NBTTagList getTagList(NBTTagCompound tag, String key, int type) {
+		if (tag == null || !tag.hasKey(key)) {
+			return new NBTTagList();
+		}
+
+		return tag.getTagList(key, type);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.chaosthedude.souls.Souls;
 import com.chaosthedude.souls.SoulsItems;
@@ -15,7 +16,6 @@ import com.chaosthedude.souls.util.ItemUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class SoulsEventHandler {
 
-	private Map<EntityPlayer, Equipment> equipmentMap = new HashMap<EntityPlayer, Equipment>();
+	private Map<UUID, Equipment> equipmentMap = new HashMap<UUID, Equipment>();
 
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onDropEvent(PlayerDropsEvent event) {
@@ -43,7 +43,12 @@ public class SoulsEventHandler {
 			}
 
 			if (!items.isEmpty()) {
-				final Equipment equipment = equipmentMap.get(event.getEntityPlayer());
+				final Equipment equipment = equipmentMap.get(event.getEntityPlayer().getGameProfile().getId());
+				for (int i = 0; i < 5; i++) {
+					if (!items.contains(equipment.getEquipmentFromIndex(i))) {
+						equipment.set(i, null);
+					}
+				}
 				final EntitySoul soul = new EntitySoul(event.getEntityPlayer(), items, equipment);
 				soul.spawnInWorld(event.getEntityPlayer().worldObj);
 
@@ -64,24 +69,16 @@ public class SoulsEventHandler {
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		final Equipment equipment = new Equipment();
 
-		final ItemStack mainhandStack = player.getHeldItemMainhand();
-		if (!ItemUtils.isSoulbound(mainhandStack)) {
-			equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
-		}
+		equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
 
 		for (int i = 0; i <= 3; i++) {
 			final ItemStack stack = player.inventory.armorInventory[i];
-			if (!ItemUtils.isSoulbound(stack)) {
-				equipment.set(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), stack);
-			}
+			equipment.set(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), stack);
 		}
 
-		final ItemStack offhandStack = player.getHeldItemOffhand();
-		if (!ItemUtils.isSoulbound(offhandStack)) {
-			equipment.set(Equipment.OFFHAND, offhandStack);
-		}
+		equipment.set(Equipment.OFFHAND, player.getHeldItemOffhand());
 
-		equipmentMap.put(player, equipment);
+		equipmentMap.put(player.getGameProfile().getId(), equipment);
 	}
 
 	@SubscribeEvent

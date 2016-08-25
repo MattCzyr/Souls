@@ -10,6 +10,7 @@ import com.chaosthedude.souls.SoulsItems;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.util.Equipment;
+import com.chaosthedude.souls.util.ItemUtils;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +34,7 @@ public class SoulsEventHandler {
 
 	private Map<EntityPlayer, Equipment> equipmentMap = new HashMap<EntityPlayer, Equipment>();
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onDropEvent(PlayerDropsEvent event) {
 		try {
 			final List<ItemStack> items = new ArrayList<ItemStack>();
@@ -63,13 +64,22 @@ public class SoulsEventHandler {
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		final Equipment equipment = new Equipment();
 
-		equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
-		for (int i = 0; i <= 3; i++) {
-			final ItemStack stack = player.inventory.armorInventory[i];
-			equipment.set(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), stack);
+		final ItemStack mainhandStack = player.getHeldItemMainhand();
+		if (!ItemUtils.isSoulbound(mainhandStack)) {
+			equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
 		}
 
-		equipment.set(Equipment.OFFHAND, player.getHeldItem(EnumHand.OFF_HAND));
+		for (int i = 0; i <= 3; i++) {
+			final ItemStack stack = player.inventory.armorInventory[i];
+			if (!ItemUtils.isSoulbound(stack)) {
+				equipment.set(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), stack);
+			}
+		}
+
+		final ItemStack offhandStack = player.getHeldItemOffhand();
+		if (!ItemUtils.isSoulbound(offhandStack)) {
+			equipment.set(Equipment.OFFHAND, offhandStack);
+		}
 
 		equipmentMap.put(player, equipment);
 	}

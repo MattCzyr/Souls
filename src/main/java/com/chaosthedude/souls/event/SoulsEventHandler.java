@@ -44,7 +44,7 @@ public class SoulsEventHandler {
 
 			if (!items.isEmpty()) {
 				final Equipment equipment = equipmentMap.get(event.getEntityPlayer().getGameProfile().getId());
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i <= 5; i++) {
 					if (!items.contains(equipment.getEquipmentFromIndex(i))) {
 						equipment.set(i, null);
 					}

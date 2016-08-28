@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.UUID;
 
 import com.chaosthedude.souls.SoulsItems;
-import com.chaosthedude.souls.client.SoulsSounds;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.items.ItemPickpocketGauntlet;
 import com.chaosthedude.souls.items.ItemSoulIdentifier;
 import com.chaosthedude.souls.util.Equipment;
 import com.chaosthedude.souls.util.ItemUtils;
-import com.chaosthedude.souls.util.PlayerUtils;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -39,9 +37,9 @@ public class EntitySoul extends EntityMob {
 
 	public List<ItemStack> items = new ArrayList<ItemStack>();
 
-	public UUID playerID;
-	public String playerName;
-	public long dateCreated;
+	private UUID playerID;
+	private String playerName;
+	private long dateCreated;
 
 	protected int identifierCooldown = 20;
 
@@ -67,7 +65,7 @@ public class EntitySoul extends EntityMob {
 		this(player.worldObj);
 
 		this.items = items;
-		playerID = player.getGameProfile().getId();
+		playerID = player.getGameProfile() != null ? player.getGameProfile().getId() : null;
 		playerName = player.getName();
 		dateCreated = System.currentTimeMillis();
 
@@ -78,7 +76,7 @@ public class EntitySoul extends EntityMob {
 		this(player.worldObj);
 
 		this.items = items;
-		playerID = player.getGameProfile().getId();
+		playerID = player.getGameProfile() != null ? player.getGameProfile().getId() : null;
 		playerName = player.getName();
 		dateCreated = System.currentTimeMillis();
 
@@ -131,14 +129,14 @@ public class EntitySoul extends EntityMob {
 	};
 
 	@Override
-	protected void damageEntity(DamageSource source, float par1) {
+	protected void damageEntity(DamageSource source, float amount) {
 		if (source.getSourceOfDamage() != null && source.getSourceOfDamage() instanceof EntityPlayer) {
 			final EntityPlayer player = (EntityPlayer) source.getSourceOfDamage();
 			if (canInteract(player)) {
-				super.damageEntity(source, par1);
+				super.damageEntity(source, amount);
 			}
 		} else if (!ConfigHandler.blockDamage || soulShouldDie()) {
-			super.damageEntity(source, par1);
+			super.damageEntity(source, amount);
 		}
 	}
 
@@ -205,7 +203,10 @@ public class EntitySoul extends EntityMob {
 
 		tag.setLong("DateCreated", dateCreated);
 
-		tag.setString("PlayerID", playerID.toString());
+		if (playerID != null) {
+			tag.setString("PlayerID", playerID.toString());
+		}
+
 		tag.setString("PlayerName", playerName);
 	}
 
@@ -235,7 +236,7 @@ public class EntitySoul extends EntityMob {
 	}
 
 	public void spawnInWorld(World world) {
-		final EntityPlayer player = world.getPlayerEntityByUUID(playerID);
+		final EntityPlayer player = playerID != null ? world.getPlayerEntityByUUID(playerID) : world.getPlayerEntityByName(playerName);
 		if (player != null) {
 			setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
 			player.worldObj.spawnEntityInWorld(this);
@@ -300,6 +301,18 @@ public class EntitySoul extends EntityMob {
 		return soulShouldExpire() || hasNoItems();
 	}
 
+	public UUID getPlayerID() {
+		return playerID;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public long getDateCreatedMillis() {
+		return dateCreated;
+	}
+
 	protected void dropItems() {
 		for (ItemStack stack : items) {
 			if (stack != null) {
@@ -311,7 +324,11 @@ public class EntitySoul extends EntityMob {
 	}
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {
-		return worldObj.getPlayerEntityByUUID(playerID) == player;
+		if (playerID != null) {
+			return worldObj.getPlayerEntityByUUID(playerID) == player;
+		}
+
+		return worldObj.getPlayerEntityByName(playerName) == player;
 	}
 
 	protected void setupArmor(Equipment equipment) {

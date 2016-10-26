@@ -97,7 +97,7 @@ public class ItemPickpocketGauntlet extends Item {
 					success = true;
 					player.inventory.addItemStackToInventory(soulStack);
 					soul.removeItemInSlot(i);
-					PlayerUtils.playSoundAtPlayer(player, SoulsSounds.pickpocket);
+					PlayerUtils.playSoundAtPlayer(player, SoulsSounds.getSoundEvent("pickpocket"));
 					break;
 				}
 

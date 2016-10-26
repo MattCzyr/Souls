@@ -41,7 +41,7 @@ public class ItemSoulIdentifier extends Item {
 		}
 
 		if (soulIdentifier != null) {
-			PlayerUtils.playSoundAtPlayer(player, SoulsSounds.identifier);
+			PlayerUtils.playSoundAtPlayer(player, SoulsSounds.getSoundEvent("identifier"));
 		}
 
 		player.addChatMessage(parseSoulInfo(soul));

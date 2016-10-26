@@ -3,6 +3,7 @@ package com.chaosthedude.souls.util;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
@@ -19,7 +20,7 @@ public class PlayerUtils {
 	}
 
 	public static void playSoundAtPlayer(EntityPlayer player, SoundEvent sound) {
-		player.playSound(sound, 1.0F, player.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		player.worldObj.playSound(null, player.posX, player.posY, player.posZ, sound, SoundCategory.AMBIENT, 1.0F, player.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 	}
 
 }

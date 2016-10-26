@@ -11,7 +11,6 @@ import com.chaosthedude.souls.SoulsItems;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.entity.EntitySoul;
 import com.chaosthedude.souls.util.Equipment;
-import com.chaosthedude.souls.util.Equipment;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

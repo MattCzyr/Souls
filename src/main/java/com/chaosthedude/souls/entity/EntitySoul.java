@@ -178,11 +178,6 @@ public class EntitySoul extends EntityMob {
 	}
 
 	@Override
-	public boolean isNonBoss() {
-		return false;
-	}
-
-	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		super.writeEntityToNBT(tag);
 
@@ -207,7 +202,9 @@ public class EntitySoul extends EntityMob {
 			tag.setString("PlayerID", playerID.toString());
 		}
 
-		tag.setString("PlayerName", playerName);
+		if (playerName != null) {
+			tag.setString("PlayerName", playerName);
+		}
 	}
 
 	@Override

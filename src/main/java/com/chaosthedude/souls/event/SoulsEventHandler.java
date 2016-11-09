@@ -21,7 +21,7 @@ public class SoulsEventHandler {
 
 	private Map<EntityPlayer, Equipment> equipmentMap = new HashMap<EntityPlayer, Equipment>();
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onDropEvent(PlayerDropsEvent event) {
 		try {
 			final List<ItemStack> items = new ArrayList<ItemStack>();

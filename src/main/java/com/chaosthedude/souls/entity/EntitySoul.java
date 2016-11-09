@@ -32,7 +32,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class EntitySoul extends EntityMob implements IBossDisplayData {
+public class EntitySoul extends EntityMob {
 
 	public static final double MAX_HEALTH = 20.0D;
 	public static final double MOVEMENT_SPEED = 0.35D;

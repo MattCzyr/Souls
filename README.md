@@ -1,6 +1,6 @@
 # Souls
 
-Souls is a hardcore revision to post-death inventory storage. After you die, an angry Soul that holds your inventory will spawn.
+Souls is a hardcore post-death inventory storage mod. After you die, an angry Soul that holds your inventory will spawn.
 
 [Downloads and more information on Curse](https://minecraft.curseforge.com/projects/souls)
 

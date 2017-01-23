@@ -20,7 +20,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class ItemSoulIdentifier extends Item {
 
-	public static final String NAME = "SoulIdentifier";
+	public static final String NAME = "soul_identifier";
 
 	public ItemSoulIdentifier() {
 		setUnlocalizedName(Souls.MODID + "." + NAME);
@@ -44,7 +44,7 @@ public class ItemSoulIdentifier extends Item {
 			PlayerUtils.playSoundAtPlayer(player, SoulsSounds.getSoundEvent("identifier"));
 		}
 
-		player.addChatMessage(parseSoulInfo(soul));
+		player.sendMessage(parseSoulInfo(soul));
 	}
 
 	protected static TextComponentTranslation parseSoulInfo(EntitySoul soul) {

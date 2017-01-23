@@ -12,6 +12,7 @@ import com.chaosthedude.souls.proxy.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -21,11 +22,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.10,1.10.2]")
+@Mod(modid = Souls.MODID, name = Souls.NAME, version = Souls.VERSION, acceptedMinecraftVersions = "[1.11]")
 
 public class Souls {
 
-	public static final String MODID = "Souls";
+	public static final String MODID = "souls";
 	public static final String NAME = "Souls";
 	public static final String VERSION = "1.1.3";
 
@@ -49,7 +50,7 @@ public class Souls {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		EntityRegistry.registerModEntity(EntitySoul.class, "Soul", 0, this, 64, 2, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "Soul"), EntitySoul.class, "Soul", 0, this, 64, 2, true);
 
 		registerRecipes();
 	}

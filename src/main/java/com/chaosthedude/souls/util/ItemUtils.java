@@ -19,13 +19,9 @@ import net.minecraft.util.text.TextFormatting;
 public class ItemUtils {
 
 	public static ItemStack getRandomArmor(EntityEquipmentSlot armorType, Random rand, List<ItemStack> items) {
-		if (items.isEmpty()) {
-			return null;
-		}
-
 		final List<ItemStack> armors = new ArrayList<ItemStack>();
 		for (ItemStack stack : items) {
-			if (stack != null && stack.getItem() instanceof ItemArmor) {
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
 				ItemArmor armor = (ItemArmor) stack.getItem();
 				if (armor.armorType == armorType) {
 					armors.add(stack);
@@ -37,21 +33,17 @@ public class ItemUtils {
 			return (ItemStack) getRandomListItem(rand, armors);
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public static ItemStack getHighestProtectionArmor(EntityEquipmentSlot armorType, List<ItemStack> items) {
-		if (items.isEmpty()) {
-			return null;
-		}
-
-		ItemStack bestArmor = null;
+		ItemStack bestArmor = ItemStack.EMPTY;
 		int bestProtection = -1;
 		for (ItemStack stack : items) {
-			if (stack != null && stack.getItem() instanceof ItemArmor) {
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
 				ItemArmor armor = (ItemArmor) stack.getItem();
 				if (armor.armorType == armorType) {
-					if (bestArmor == null || armor.damageReduceAmount > bestProtection) {
+					if (bestArmor.isEmpty() || armor.damageReduceAmount > bestProtection) {
 						bestArmor = stack;
 						bestProtection = armor.damageReduceAmount;
 					}
@@ -63,13 +55,9 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getRandomWeaponForHand(EntityEquipmentSlot hand, Random rand, List<ItemStack> items) {
-		if (items.isEmpty()) {
-			return null;
-		}
-
 		List<ItemStack> weapons = new ArrayList<ItemStack>();
 		for (ItemStack stack : items) {
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				double damage = getDamageDealtBy(stack, hand);
 				if (damage > 1) {
 					weapons.add(stack);
@@ -85,11 +73,11 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getHighestDamageItemForHand(EntityEquipmentSlot hand, List<ItemStack> items) {
-		ItemStack highestDamageItem = null;
+		ItemStack highestDamageItem = ItemStack.EMPTY;
 		double highestDamage = -1D;
 		for (ItemStack stack : items) {
-			if (stack != null) {
-				if (highestDamageItem == null) {
+			if (!stack.isEmpty()) {
+				if (highestDamageItem.isEmpty()) {
 					highestDamageItem = stack;
 				} else {
 					double damage = getDamageDealtBy(stack, hand);
@@ -107,7 +95,7 @@ public class ItemUtils {
 	public static double getDamageDealtBy(ItemStack stack, EntityEquipmentSlot hand) {
 		double damage = -1D;
 		Multimap attributes = stack.getAttributeModifiers(hand);
-		Collection collection = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
+		Collection collection = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 		for (Object o : collection) {
 			if (o instanceof AttributeModifier) {
 				AttributeModifier modifier = (AttributeModifier) o;
@@ -124,9 +112,9 @@ public class ItemUtils {
 
 	public static int getNumberOfItems(EntityPlayer player, Item item) {
 		int amount = 0;
-		for (int i = 0; i < player.inventory.mainInventory.length; i++) {
-			final ItemStack stack = player.inventory.mainInventory[i];
-			if (stack != null && stack.getItem() == item) {
+		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+			final ItemStack stack = player.inventory.mainInventory.get(i);
+			if (!stack.isEmpty() && stack.getItem() == item) {
 				amount++;
 			}
 		}
@@ -154,7 +142,7 @@ public class ItemUtils {
 	}
 
 	public static boolean slotIsEmpty(EntityPlayer player, int slot) {
-		if (player.inventory.mainInventory[slot] == null || player.inventory.mainInventory[slot].stackSize == 0) {
+		if (player.inventory.mainInventory.get(slot).isEmpty() || player.inventory.mainInventory.get(slot).getCount() == 0) {
 			return true;
 		}
 

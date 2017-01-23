@@ -20,7 +20,7 @@ public class PlayerUtils {
 	}
 
 	public static void playSoundAtPlayer(EntityPlayer player, SoundEvent sound) {
-		player.worldObj.playSound(null, player.posX, player.posY, player.posZ, sound, SoundCategory.AMBIENT, 1.0F, player.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		player.world.playSound(null, player.posX, player.posY, player.posZ, sound, SoundCategory.AMBIENT, 1.0F, player.world.rand.nextFloat() * 0.1F + 0.9F);
 	}
 
 }

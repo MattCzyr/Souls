@@ -62,7 +62,7 @@ public class EntitySoul extends EntityMob {
 	}
 
 	public EntitySoul(EntityPlayer player, List<ItemStack> items) {
-		this(player.worldObj);
+		this(player.world);
 
 		this.items = items;
 		playerID = player.getGameProfile() != null ? player.getGameProfile().getId() : null;
@@ -73,7 +73,7 @@ public class EntitySoul extends EntityMob {
 	}
 
 	public EntitySoul(EntityPlayer player, List<ItemStack> items, Equipment equipment) {
-		this(player.worldObj);
+		this(player.world);
 
 		this.items = items;
 		playerID = player.getGameProfile() != null ? player.getGameProfile().getId() : null;
@@ -116,7 +116,7 @@ public class EntitySoul extends EntityMob {
 		super.onLivingUpdate();
 
 		if (soulShouldDie()) {
-			attackEntityFrom(DamageSource.generic, getHealth());
+			attackEntityFrom(DamageSource.GENERIC, getHealth());
 		}
 
 		if (identifierCooldown > 0) {
@@ -144,23 +144,24 @@ public class EntitySoul extends EntityMob {
 	public void onDeath(DamageSource source) {
 		super.onDeath(source);
 
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			dropItems();
 		}
 	}
 
 	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-		if (stack != null && stack.getItem() instanceof ItemPickpocketGauntlet) {
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemPickpocketGauntlet) {
 			final ItemPickpocketGauntlet pickpocketGauntlet = (ItemPickpocketGauntlet) stack.getItem();
 			pickpocketGauntlet.pickpocket(player, stack, this);
 
 			return true;
 		}
 
-		if (!player.worldObj.isRemote && identifierCooldown <= 0) {
+		if (!player.world.isRemote && identifierCooldown <= 0) {
 			ItemSoulIdentifier soulIdentifier = null;
-			if (stack != null && stack.getItem() == SoulsItems.soulIdentifier) {
+			if (!stack.isEmpty() && stack.getItem() == SoulsItems.soulIdentifier) {
 				soulIdentifier = (ItemSoulIdentifier) stack.getItem();
 			}
 
@@ -187,7 +188,7 @@ public class EntitySoul extends EntityMob {
 		for (ItemStack stack : items) {
 			tag1 = new NBTTagCompound();
 
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				stack.writeToNBT(tag1);
 			}
 
@@ -215,7 +216,7 @@ public class EntitySoul extends EntityMob {
 			NBTTagList inventoryTagList = tag.getTagList("Inventory", 10);
 
 			for (int i = 0; i < inventoryTagList.tagCount(); i++) {
-				items.add(ItemStack.loadItemStackFromNBT(inventoryTagList.getCompoundTagAt(i)));
+				items.add(new ItemStack(inventoryTagList.getCompoundTagAt(i)));
 			}
 		}
 
@@ -236,14 +237,14 @@ public class EntitySoul extends EntityMob {
 		final EntityPlayer player = playerID != null ? world.getPlayerEntityByUUID(playerID) : world.getPlayerEntityByName(playerName);
 		if (player != null) {
 			setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
-			player.worldObj.spawnEntityInWorld(this);
+			player.world.spawnEntity(this);
 		}
 	}
 
 	public int getNumItemsHeld() {
 		int amount = items.size();
 		for (int i = 0; i <= 4; i++) {
-			if (getItemStackFromSlot(Equipment.getSlotFromEquipmentIndex(i)) != null) {
+			if (!getItemStackFromSlot(Equipment.getSlotFromEquipmentIndex(i)).isEmpty()) {
 				amount++;
 			}
 		}
@@ -257,7 +258,7 @@ public class EntitySoul extends EntityMob {
 
 	public void clearEquipment() {
 		for (int i = 0; i <= 4; i++) {
-			setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), null);
+			setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), ItemStack.EMPTY);
 		}
 	}
 
@@ -274,8 +275,8 @@ public class EntitySoul extends EntityMob {
 		items.remove(slot);
 		for (int i = 0; i <= 4; i++) {
 			final ItemStack equipment = getItemStackFromSlot(Equipment.getSlotFromEquipmentIndex(i));
-			if (equipment != null && equipment.isItemEqual(stack)) {
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), null);
+			if (!equipment.isEmpty() && equipment.isItemEqual(stack)) {
+				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), ItemStack.EMPTY);
 				return;
 			}
 		}
@@ -312,7 +313,7 @@ public class EntitySoul extends EntityMob {
 
 	protected void dropItems() {
 		for (ItemStack stack : items) {
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				entityDropItem(stack, 0.0F);
 			}
 		}
@@ -322,29 +323,28 @@ public class EntitySoul extends EntityMob {
 
 	protected boolean playerIsSoulOwner(EntityPlayer player) {
 		if (playerID != null) {
-			return worldObj.getPlayerEntityByUUID(playerID) == player;
+			return world.getPlayerEntityByUUID(playerID) == player;
 		}
 
-		return worldObj.getPlayerEntityByName(playerName) == player;
+		return world.getPlayerEntityByName(playerName) == player;
 	}
 
 	protected void setupArmor(Equipment equipment) {
-		ItemStack armor = null;
+		ItemStack armor = ItemStack.EMPTY;
 		for (int i = 0; i <= 3; i++) {
 			if (ConfigHandler.useBestEquipment) {
 				armor = ItemUtils.getHighestProtectionArmor(Equipment.getSlotFromEquipmentIndex(i), items);
 				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(4 - i), armor);
 			} else if (equipment != null) {
 				armor = equipment.getEquipmentFromIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i));
-				setItemStackToSlot(
-						Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
+				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
 			}
 		}
 	}
 
 	protected void setupWeapon(Equipment equipment) {
-		ItemStack mainhand = null;
-		ItemStack offhand = null;
+		ItemStack mainhand = ItemStack.EMPTY;
+		ItemStack offhand = ItemStack.EMPTY;
 		if (ConfigHandler.useBestEquipment) {
 			mainhand = ItemUtils.getHighestDamageItemForHand(EntityEquipmentSlot.MAINHAND, items);
 		} else if (equipment != null) {

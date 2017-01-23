@@ -45,11 +45,11 @@ public class SoulsEventHandler {
 				final Equipment equipment = equipmentMap.get(event.getEntityPlayer().getGameProfile().getId());
 				for (int i = 0; i <= 5; i++) {
 					if (!items.contains(equipment.getEquipmentFromIndex(i))) {
-						equipment.set(i, null);
+						equipment.set(i, ItemStack.EMPTY);
 					}
 				}
 				final EntitySoul soul = new EntitySoul(event.getEntityPlayer(), items, equipment);
-				soul.spawnInWorld(event.getEntityPlayer().worldObj);
+				soul.spawnInWorld(event.getEntityPlayer().world);
 
 				event.getDrops().clear();
 			}
@@ -61,7 +61,7 @@ public class SoulsEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onLivingDeath(LivingDeathEvent event) {
-		if (!(event.getEntityLiving() instanceof EntityPlayer) || event.getEntityLiving().worldObj.isRemote) {
+		if (!(event.getEntityLiving() instanceof EntityPlayer) || event.getEntityLiving().world.isRemote) {
 			return;
 		}
 
@@ -71,7 +71,7 @@ public class SoulsEventHandler {
 		equipment.set(Equipment.MAINHAND, player.getHeldItemMainhand());
 
 		for (int i = 0; i <= 3; i++) {
-			final ItemStack stack = player.inventory.armorInventory[i];
+			final ItemStack stack = player.inventory.armorInventory.get(i);
 			equipment.set(Equipment.getEquipmentIndexFromPlayerArmorIndex(i), stack);
 		}
 

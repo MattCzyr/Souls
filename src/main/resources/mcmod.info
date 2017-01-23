@@ -1,6 +1,6 @@
 [
 {
-  "modid": "Souls",
+  "modid": "soul",
   "name": "Souls",
   "description": "Spawns a angry Soul that steals your inventory when you die. Good luck!",
   "version": "${version}",

@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "Souls:items/CreativePickpocketGauntlet"
+        "layer0": "souls:items/soul_identifier"
     }
 }

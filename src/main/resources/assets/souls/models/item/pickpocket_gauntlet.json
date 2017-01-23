@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "Souls:items/EnderJewel"
+        "layer0": "souls:items/pickpocket_gauntlet"
     }
 }

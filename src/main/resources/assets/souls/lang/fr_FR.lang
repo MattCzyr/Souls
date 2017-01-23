@@ -2,26 +2,26 @@
 # FRANCE - FRENCH
 
 # ENTITIES
-entity.Souls.Soul.name=Ame
+entity.souls.soul.name=Ame
 
 # ITEMS
-item.Souls.PickpocketGauntlet.name=Gant de Voleur
-item.Souls.CreativePickpocketGauntlet.name=Gant de Voleur Creatif
-item.Souls.SoulIdentifier.name=Identificateur de Ame
-item.Souls.EnderJewel.name=Ender Bijou
+item.souls.pickpocket_gauntlet.name=Gant de Voleur
+item.souls.creative_pickpocket_gauntlet.name=Gant de Voleur Creatif
+item.souls.soul_identifier.name=Identificateur de Ame
+item.souls.ender_jewel.name=Ender Bijou
 
 # STRINGS - ITEM DESCS
-string.Souls.identifier=Cette Ame appartient a %s, qui est mort il y a %s, et tient actuellement %s articles.
-string.Souls.soulIdentifier.desc=Utilisez l'Identificateur de Ame sur une Ame pour afficher des informations a ce sujet.
-string.Souls.pickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite). Clic-droit tout en se faufilant avec des Perles de Ender dans votre inventaire pour reconstituer les frais.
-string.Souls.creativePickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite).
+string.souls.identifier=Cette Ame appartient a %s, qui est mort il y a %s, et tient actuellement %s articles.
+string.souls.soulIdentifier.desc=Utilisez l'Identificateur de Ame sur une Ame pour afficher des informations a ce sujet.
+string.souls.pickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite). Clic-droit tout en se faufilant avec des Perles de Ender dans votre inventaire pour reconstituer les frais.
+string.souls.creativePickpocketGauntlet.desc=Utilisez le Gant de Voleur sur une ame pour tenter de voler des articles de celle-ci (%s taux de reussite).
 
 # STRINGS - SUBTITLES
-string.Souls.pickpocketSuccess=A vole avec succes
-string.Souls.identifierUse=Utiliser l'Identificateur de Ame
+string.souls.pickpocketSuccess=A vole avec succes
+string.souls.identifierUse=Utiliser l'Identificateur de Ame
 
 # STRINGS - MISC
-string.Souls.charges=Frais
+string.souls.charges=Frais
 string.years=annees
 string.months=mois
 string.weeks=semaines

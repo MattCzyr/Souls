@@ -20,7 +20,7 @@ public class SoulsItems {
 
 		registerItem(creativePickpocketGauntlet, creativePickpocketGauntlet.name);
 		registerItem(pickpocketGauntlet, pickpocketGauntlet.name);
-		registerItem(enderJewel, "EnderJewel");
+		registerItem(enderJewel, "ender_jewel");
 		registerItem(soulIdentifier, soulIdentifier.NAME);
 	}
 
@@ -30,9 +30,9 @@ public class SoulsItems {
 	}
 
 	private static void init() {
-		creativePickpocketGauntlet = new ItemPickpocketGauntlet(9999, 100.0D, "CreativePickpocketGauntlet");
-		pickpocketGauntlet = new ItemPickpocketGauntlet(16, ConfigHandler.pickpocketSuccessRate, "PickpocketGauntlet");
-		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".EnderJewel").setCreativeTab(CreativeTabs.MATERIALS);
+		creativePickpocketGauntlet = new ItemPickpocketGauntlet(9999, 100.0D, "creative_pickpocket_gauntlet");
+		pickpocketGauntlet = new ItemPickpocketGauntlet(16, ConfigHandler.pickpocketSuccessRate, "pickpocket_gauntlet");
+		enderJewel = new Item().setUnlocalizedName(Souls.MODID + ".ender_jewel").setCreativeTab(CreativeTabs.MATERIALS);
 		soulIdentifier = new ItemSoulIdentifier();
 	}
 

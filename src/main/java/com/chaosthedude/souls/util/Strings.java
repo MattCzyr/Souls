@@ -9,11 +9,11 @@ public class Strings {
 	public static final String MINUTES = "string.minutes";
 	public static final String SECONDS = "string.seconds";
 	public static final String AND = "string.and";
-	public static final String SOUL_INFO = "string.Souls.identifier";
-	public static final String SOUL_IDENTIFIER = "string.Souls.soulIdentifier.desc";
-	public static final String PICKPOCKET_GAUNTLET = "string.Souls.pickpocketGauntlet.desc";
-	public static final String CREATIVE_PICKPOCKET_GAUNTLET = "string.Souls.creativePickpocketGauntlet.desc";
-	public static final String CHARGES = "string.Souls.charges";
+	public static final String SOUL_INFO = "string.souls.identifier";
+	public static final String SOUL_IDENTIFIER = "string.souls.soulIdentifier.desc";
+	public static final String PICKPOCKET_GAUNTLET = "string.souls.pickpocketGauntlet.desc";
+	public static final String CREATIVE_PICKPOCKET_GAUNTLET = "string.souls.creativePickpocketGauntlet.desc";
+	public static final String CHARGES = "string.souls.charges";
 
 	public static final String WEAPON_MODIFIER = "Weapon modifier";
 	public static final String TOOL_MODIFIER = "Tool modifier";

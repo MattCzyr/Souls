@@ -2,7 +2,7 @@
 {
   "modid": "soul",
   "name": "Souls",
-  "description": "Spawns a angry Soul that steals your inventory when you die. Good luck!",
+  "description": "Spawns a hostile Soul that steals your inventory when you die. Good luck!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

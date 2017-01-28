@@ -1,0 +1,32 @@
+# Souls - Language File
+# GERMANY - GERMAN
+
+# ENTITIES
+entity.souls.soul.name=Seele
+
+# ITEMS
+item.souls.pickpocket_gauntlet.name=Handschuh des Langfingers
+item.souls.creative_pickpocket_gauntlet.name=Kreativ-Handschuh des Langfingers
+item.souls.soul_identifier.name=Seelenerkenner
+item.souls.ender_jewel.name=Enderjuwel
+
+# STRINGS - ITEM DESCS
+string.souls.identifier=Diese Seele gehört zu %s, welcher vor %s gestorben ist, und besitzt aktuell %s Gegenstände.
+string.souls.soulIdentifier.desc=Wende den Seelenerkenner auf eine Seele an, um Informationen über sie zu erhalten.
+string.souls.pickpocketGauntlet.desc=Wende den Handschuh des Langfingers auf eine Seele an, um zu versuchen, Gegenstände zu stehlen (%s-Erfolgschance). Rechtsklicke, während du schleichst und Enderperlen in der Hand hältst, um deine Aufladungen zu erneuern.
+string.souls.creativePickpocketGauntlet.desc=Wende den Handschuh des Langfingers auf eine Seele an, um zu versuchen, Gegenstände zu stehlen (%s-Erfolgschance).
+
+# STRINGS - SUBTITLES
+string.souls.pickpocketSuccess=Erfolgreich gestohlen
+string.souls.identifierUse=Seelenerkenner verwendet
+
+# STRINGS - MISC
+string.souls.charges=Aufladungen
+string.years=Jahre
+string.months=Monate
+string.weeks=Wochen
+string.days=Tage
+string.hours=Stunden
+string.minutes=Minuten
+string.seconds=Sekunden
+string.and=und

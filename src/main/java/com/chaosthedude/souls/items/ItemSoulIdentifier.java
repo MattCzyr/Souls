@@ -10,6 +10,7 @@ import com.chaosthedude.souls.util.PlayerUtils;
 import com.chaosthedude.souls.util.StringUtils;
 import com.chaosthedude.souls.util.Strings;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,6 +18,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ItemSoulIdentifier extends Item {
 
@@ -29,9 +33,9 @@ public class ItemSoulIdentifier extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
-		if (StringUtils.holdShiftForInfo(info)) {
-			ItemUtils.addItemDesc(info, Strings.SOUL_IDENTIFIER);
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (StringUtils.holdShiftForInfo(tooltip)) {
+			ItemUtils.addItemDesc(tooltip, Strings.SOUL_IDENTIFIER);
 		}
 	}
 
@@ -41,7 +45,7 @@ public class ItemSoulIdentifier extends Item {
 		}
 
 		if (soulIdentifier != null) {
-			PlayerUtils.playSoundAtPlayer(player, SoulsSounds.getSoundEvent("identifier"));
+			PlayerUtils.playSoundAtPlayer(player, SoulsSounds.IDENTIFIER);
 		}
 
 		player.sendMessage(parseSoulInfo(soul));

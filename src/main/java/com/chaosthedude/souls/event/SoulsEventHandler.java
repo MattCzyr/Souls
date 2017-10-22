@@ -38,7 +38,7 @@ public class SoulsEventHandler {
 		try {
 			final List<ItemStack> items = new ArrayList<ItemStack>();
 			for (EntityItem i : event.getDrops()) {
-				items.add(i.getEntityItem());
+				items.add(i.getItem());
 			}
 
 			if (!items.isEmpty()) {
@@ -87,7 +87,7 @@ public class SoulsEventHandler {
 			if (main != null) {
 				LootCondition[] chance = { new RandomChance(0.10F) };
 				LootFunction[] count = { new SetCount(chance, new RandomValueRange(1.0F, 1.0F)) };
-				main.addEntry(new LootEntryItem(SoulsItems.pickpocketGauntlet, 50, 1, count, chance, Souls.MODID + ":pickpocketGauntlet"));
+				main.addEntry(new LootEntryItem(SoulsItems.PICKPOCKET_GAUNTLET, 50, 1, count, chance, Souls.MODID + ":PICKPOCKET_GAUNTLET"));
 			}
 		}
 	}

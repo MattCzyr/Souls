@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSoul extends RenderBiped<EntitySoul> {
 
-	private static final ResourceLocation texture = new ResourceLocation("souls", "textures/models/Soul.png");
+	private static final ResourceLocation texture = new ResourceLocation("souls", "textures/models/soul.png");
 
 	public RenderSoul(RenderManager manager) {
 		super(manager, new ModelSoul(), 0.5F);

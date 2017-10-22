@@ -1,23 +1,13 @@
 package com.chaosthedude.souls.entity;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.UUID;
-
 import com.chaosthedude.souls.SoulsItems;
 import com.chaosthedude.souls.config.ConfigHandler;
 import com.chaosthedude.souls.items.ItemPickpocketGauntlet;
 import com.chaosthedude.souls.items.ItemSoulIdentifier;
 import com.chaosthedude.souls.util.Equipment;
 import com.chaosthedude.souls.util.ItemUtils;
-
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -29,6 +19,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 public class EntitySoul extends EntityMob {
 
@@ -98,11 +93,12 @@ public class EntitySoul extends EntityMob {
 
 	@Override
 	protected void despawnEntity() {
-		entityAge = 0;
+		// Think this is the correct replacement for `entityAge`
+		idleTime = 0;
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return SoundEvents.ENTITY_SKELETON_HURT;
 	}
 
@@ -130,8 +126,8 @@ public class EntitySoul extends EntityMob {
 
 	@Override
 	protected void damageEntity(DamageSource source, float amount) {
-		if (source.getSourceOfDamage() != null && source.getSourceOfDamage() instanceof EntityPlayer) {
-			final EntityPlayer player = (EntityPlayer) source.getSourceOfDamage();
+		if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityPlayer) {
+			final EntityPlayer player = (EntityPlayer) source.getTrueSource();
 			if (canInteract(player)) {
 				super.damageEntity(source, amount);
 			}
@@ -161,7 +157,7 @@ public class EntitySoul extends EntityMob {
 
 		if (!player.world.isRemote && identifierCooldown <= 0) {
 			ItemSoulIdentifier soulIdentifier = null;
-			if (!stack.isEmpty() && stack.getItem() == SoulsItems.soulIdentifier) {
+			if (!stack.isEmpty() && stack.getItem() == SoulsItems.SOUL_IDENTIFIER) {
 				soulIdentifier = (ItemSoulIdentifier) stack.getItem();
 			}
 

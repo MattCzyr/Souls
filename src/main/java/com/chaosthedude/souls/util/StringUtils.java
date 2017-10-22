@@ -12,7 +12,7 @@ import net.minecraft.util.text.translation.I18n;
 public class StringUtils {
 
 	public static String getTimeSince(Date dateTime) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Date current = Calendar.getInstance().getTime();
 		long diffInSeconds = (current.getTime() - dateTime.getTime()) / 1000;
 
@@ -113,7 +113,7 @@ public class StringUtils {
 		return parsedStrings;
 	}
 
-	public static boolean holdShiftForInfo(List info) {
+	public static boolean holdShiftForInfo(List<String> info) {
 		if (!GuiScreen.isShiftKeyDown()) {
 			info.add(TextFormatting.DARK_GRAY.toString() + TextFormatting.ITALIC.toString() + "Hold Shift for more info");
 			return false;

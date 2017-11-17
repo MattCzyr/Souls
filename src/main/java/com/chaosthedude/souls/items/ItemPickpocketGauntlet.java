@@ -12,6 +12,7 @@ import com.chaosthedude.souls.util.PlayerUtils;
 import com.chaosthedude.souls.util.StringUtils;
 import com.chaosthedude.souls.util.Strings;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ItemPickpocketGauntlet extends Item {
 
@@ -46,7 +49,7 @@ public class ItemPickpocketGauntlet extends Item {
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		if (stack.getItem() == SoulsItems.creativePickpocketGauntlet) {
+		if (stack.getItem() == SoulsItems.CREATIVE_PICKPOCKET_GAUNTLET) {
 			return EnumRarity.EPIC;
 		}
 
@@ -54,13 +57,13 @@ public class ItemPickpocketGauntlet extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean par4) {
-		info.add(TextFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getChargesAsString(stack));
-		if (StringUtils.holdShiftForInfo(info)) {
-			if (stack.getItem() == SoulsItems.pickpocketGauntlet) {
-				ItemUtils.addItemDesc(info, Strings.PICKPOCKET_GAUNTLET, MathHelper.floor(ConfigHandler.pickpocketSuccessRate) + "%");
-			} else if (stack.getItem() == SoulsItems.creativePickpocketGauntlet) {
-				ItemUtils.addItemDesc(info, Strings.CREATIVE_PICKPOCKET_GAUNTLET, "100%");
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(TextFormatting.GRAY.toString() + StringUtils.localize(Strings.CHARGES) + ": " + getRarity(stack).rarityColor.toString() + getChargesAsString(stack));
+		if (StringUtils.holdShiftForInfo(tooltip)) {
+			if (stack.getItem() == SoulsItems.PICKPOCKET_GAUNTLET) {
+				ItemUtils.addItemDesc(tooltip, Strings.PICKPOCKET_GAUNTLET, MathHelper.floor(ConfigHandler.pickpocketSuccessRate) + "%");
+			} else if (stack.getItem() == SoulsItems.CREATIVE_PICKPOCKET_GAUNTLET) {
+				ItemUtils.addItemDesc(tooltip, Strings.CREATIVE_PICKPOCKET_GAUNTLET, "100%");
 			}
 		}
 	}
@@ -97,7 +100,7 @@ public class ItemPickpocketGauntlet extends Item {
 					success = true;
 					player.inventory.addItemStackToInventory(soulStack);
 					soul.removeItemInSlot(i);
-					PlayerUtils.playSoundAtPlayer(player, SoulsSounds.getSoundEvent("pickpocket"));
+					PlayerUtils.playSoundAtPlayer(player, SoulsSounds.PICKPOCKET);
 					break;
 				}
 
@@ -114,7 +117,7 @@ public class ItemPickpocketGauntlet extends Item {
 	}
 
 	public EnumActionResult recharge(EntityPlayer player, ItemStack stack) {
-		if (player == null || !player.isSneaking() || player.capabilities.isCreativeMode || stack.isEmpty() || stack.getItem() != SoulsItems.pickpocketGauntlet || getCharges(stack) == 16) {
+		if (player == null || !player.isSneaking() || player.capabilities.isCreativeMode || stack.isEmpty() || stack.getItem() != SoulsItems.PICKPOCKET_GAUNTLET || getCharges(stack) == 16) {
 			return EnumActionResult.PASS;
 		}
 
@@ -145,7 +148,7 @@ public class ItemPickpocketGauntlet extends Item {
 	}
 
 	public void useCharge(EntityPlayer player, ItemStack stack) {
-		if (stack.getItem() == SoulsItems.pickpocketGauntlet && hasCharges(stack) && !player.capabilities.isCreativeMode) {
+		if (stack.getItem() == SoulsItems.PICKPOCKET_GAUNTLET && hasCharges(stack) && !player.capabilities.isCreativeMode) {
 			setDamage(stack, stack.getItemDamage() + 1);
 		}
 	}

@@ -3,30 +3,24 @@ buildscript {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
     }
+
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-
-version = "1.11.2-2.0.0"
+version = "1.12.2-3.0.0"
 group = "com.chaosthedude.souls"
-archivesBaseName = "Souls"
+archivesBaseName = "souls"
 
-sourceCompatibility = targetCompatibility = "1.6"
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
-}
+sourceCompatibility = targetCompatibility = "1.8"
 
 minecraft {
-    version = "1.11.2-13.20.0.2224"
+    version = "1.12.2-14.23.0.2512"
     runDir = "run"
-    mappings = "snapshot_20161220"
-}
-
-dependencies {
-
+    mappings = "snapshot_20171003"
 }
 
 processResources {
@@ -35,7 +29,6 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
 

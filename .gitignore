@@ -6,6 +6,7 @@ ehthumbs.db
 /.gradle
 /build
 *.launch
+/out
 
 # ForgeGradle
 /run
@@ -17,6 +18,10 @@ ehthumbs.db
 /.project
 /eclipse
 /bin
+
+# IntelliJ
+/.idea
+*.iml
 
 # Folder config file
 Desktop.ini

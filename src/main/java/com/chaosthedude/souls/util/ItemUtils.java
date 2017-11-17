@@ -1,12 +1,6 @@
 package com.chaosthedude.souls.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
-
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,10 +10,15 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
 public class ItemUtils {
 
 	public static ItemStack getRandomArmor(EntityEquipmentSlot armorType, Random rand, List<ItemStack> items) {
-		final List<ItemStack> armors = new ArrayList<ItemStack>();
+		final List<ItemStack> armors = new ArrayList<>();
 		for (ItemStack stack : items) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
 				ItemArmor armor = (ItemArmor) stack.getItem();
@@ -94,16 +93,15 @@ public class ItemUtils {
 
 	public static double getDamageDealtBy(ItemStack stack, EntityEquipmentSlot hand) {
 		double damage = -1D;
-		Multimap attributes = stack.getAttributeModifiers(hand);
-		Collection collection = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
-		for (Object o : collection) {
-			if (o instanceof AttributeModifier) {
-				AttributeModifier modifier = (AttributeModifier) o;
-				if (modifier.getName().equals(Strings.ATTACK_DAMAGE)
-						|| modifier.getName().equals(Strings.WEAPON_MODIFIER)
-						|| modifier.getName().equals(Strings.TOOL_MODIFIER)) {
-					damage = modifier.getAmount();
-				}
+
+		Multimap<String, AttributeModifier> attributes = stack.getAttributeModifiers(hand);
+		Collection<AttributeModifier> attackDamageAttributes = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+
+		for (AttributeModifier modifier : attackDamageAttributes) {
+			if (modifier.getName().equals(Strings.ATTACK_DAMAGE)
+					|| modifier.getName().equals(Strings.WEAPON_MODIFIER)
+					|| modifier.getName().equals(Strings.TOOL_MODIFIER)) {
+				damage = modifier.getAmount();
 			}
 		}
 
@@ -149,7 +147,7 @@ public class ItemUtils {
 		return false;
 	}
 
-	public static void addItemDesc(List info, String desc, Object... args) {
+	public static void addItemDesc(List<String> info, String desc, Object... args) {
 		for (String s : StringUtils.parseStringIntoLength(StringUtils.localize(desc, args), 25)) {
 			info.add(TextFormatting.GRAY.toString() + s);
 		}

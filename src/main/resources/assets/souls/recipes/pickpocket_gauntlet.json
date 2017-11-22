@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "souls:pickpocket_gauntlet"
+  },
+  "pattern": [
+    "II ",
+    "IJI",
+    " IB"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "J": {
+      "item": "souls:ender_jewel"
+    },
+	"B": {
+	  "item": "minecraft:iron_block"
+	}
+  }
+}

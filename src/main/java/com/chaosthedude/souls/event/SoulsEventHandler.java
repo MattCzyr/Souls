@@ -54,7 +54,8 @@ public class SoulsEventHandler {
 				event.getDrops().clear();
 			}
 		} catch (Exception e) {
-			Souls.logger.error("Caught an exception while trying to spawn a Soul. This is a bug! Report the following stack trace to the mod author:");
+			Souls.logger.error(
+					"Caught an exception while trying to spawn a Soul. This is a bug! Report the following stack trace to the mod author:");
 			e.printStackTrace();
 		}
 	}
@@ -78,18 +79,6 @@ public class SoulsEventHandler {
 		equipment.set(Equipment.OFFHAND, player.getHeldItemOffhand());
 
 		equipmentMap.put(player.getGameProfile().getId(), equipment);
-	}
-
-	@SubscribeEvent
-	public void onLootTableLoad(LootTableLoadEvent event) {
-		if (ConfigHandler.pickpocketGauntletLoot && event.getName() == LootTableList.CHESTS_VILLAGE_BLACKSMITH) {
-			LootPool main = event.getTable().getPool("main");
-			if (main != null) {
-				LootCondition[] chance = { new RandomChance(0.10F) };
-				LootFunction[] count = { new SetCount(chance, new RandomValueRange(1.0F, 1.0F)) };
-				main.addEntry(new LootEntryItem(SoulsItems.PICKPOCKET_GAUNTLET, 50, 1, count, chance, Souls.MODID + ":PICKPOCKET_GAUNTLET"));
-			}
-		}
 	}
 
 }

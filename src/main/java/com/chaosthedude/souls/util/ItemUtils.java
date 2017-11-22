@@ -95,11 +95,11 @@ public class ItemUtils {
 		double damage = -1D;
 
 		Multimap<String, AttributeModifier> attributes = stack.getAttributeModifiers(hand);
-		Collection<AttributeModifier> attackDamageAttributes = attributes.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+		Collection<AttributeModifier> attackDamageAttributes = attributes
+				.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 
 		for (AttributeModifier modifier : attackDamageAttributes) {
-			if (modifier.getName().equals(Strings.ATTACK_DAMAGE)
-					|| modifier.getName().equals(Strings.WEAPON_MODIFIER)
+			if (modifier.getName().equals(Strings.ATTACK_DAMAGE) || modifier.getName().equals(Strings.WEAPON_MODIFIER)
 					|| modifier.getName().equals(Strings.TOOL_MODIFIER)) {
 				damage = modifier.getAmount();
 			}
@@ -140,7 +140,8 @@ public class ItemUtils {
 	}
 
 	public static boolean slotIsEmpty(EntityPlayer player, int slot) {
-		if (player.inventory.mainInventory.get(slot).isEmpty() || player.inventory.mainInventory.get(slot).getCount() == 0) {
+		if (player.inventory.mainInventory.get(slot).isEmpty()
+				|| player.inventory.mainInventory.get(slot).getCount() == 0) {
 			return true;
 		}
 

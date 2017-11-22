@@ -19,7 +19,6 @@ public class ConfigHandler {
 	public static boolean equipItems = true;
 	public static boolean lockSouls = false;
 	public static boolean pickpocketGauntletAggros = true;
-	public static boolean pickpocketGauntletLoot = true;
 	public static boolean requireSoulIdentifier = true;
 	public static boolean soulsAggro = true;
 	public static boolean useBestEquipment = false;
@@ -52,9 +51,6 @@ public class ConfigHandler {
 
 		comment = "Set this to false to disable failed Pickpocket's Gauntlet uses from aggroing Souls. If this is set to true, 'souls.aggro' must also be true for it to take effect.";
 		pickpocketGauntletAggros = loadBool("souls.pickpocket.aggros", comment, pickpocketGauntletAggros);
-
-		comment = "Set this to false to disable the Pickpocket's Gauntlet from being found as blacksmiths' loot in villages. This will NOT add a recipe for it.";
-		pickpocketGauntletLoot = loadBool("souls.pickpocketGauntlet.loot", comment, pickpocketGauntletLoot);
 
 		comment = "Set this to false to disable the need for a Soul Identifier to view information about a Soul; with this set to false you'll be able to use an empty hand to view the information.";
 		requireSoulIdentifier = loadBool("souls.requireSoulIdentifier", comment, requireSoulIdentifier);

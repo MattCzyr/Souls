@@ -115,7 +115,8 @@ public class StringUtils {
 
 	public static boolean holdShiftForInfo(List<String> info) {
 		if (!GuiScreen.isShiftKeyDown()) {
-			info.add(TextFormatting.DARK_GRAY.toString() + TextFormatting.ITALIC.toString() + "Hold Shift for more info");
+			info.add(TextFormatting.DARK_GRAY.toString() + TextFormatting.ITALIC.toString()
+					+ "Hold Shift for more info");
 			return false;
 		}
 

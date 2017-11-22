@@ -230,7 +230,8 @@ public class EntitySoul extends EntityMob {
 	}
 
 	public void spawnInWorld(World world) {
-		final EntityPlayer player = playerID != null ? world.getPlayerEntityByUUID(playerID) : world.getPlayerEntityByName(playerName);
+		final EntityPlayer player = playerID != null ? world.getPlayerEntityByUUID(playerID)
+				: world.getPlayerEntityByName(playerName);
 		if (player != null) {
 			setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
 			player.world.spawnEntity(this);
@@ -333,7 +334,8 @@ public class EntitySoul extends EntityMob {
 				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(4 - i), armor);
 			} else if (equipment != null) {
 				armor = equipment.getEquipmentFromIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i));
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
+				setItemStackToSlot(
+						Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
 			}
 		}
 	}

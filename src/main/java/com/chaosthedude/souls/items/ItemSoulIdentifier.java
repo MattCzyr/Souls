@@ -52,7 +52,8 @@ public class ItemSoulIdentifier extends Item {
 	}
 
 	protected static TextComponentTranslation parseSoulInfo(EntitySoul soul) {
-		final TextComponentTranslation soulInfo = new TextComponentTranslation(Strings.SOUL_INFO, soul.getPlayerName(), StringUtils.parseDate(soul.getDateCreatedMillis()), soul.getNumItemsHeld());
+		final TextComponentTranslation soulInfo = new TextComponentTranslation(Strings.SOUL_INFO, soul.getPlayerName(),
+				StringUtils.parseDate(soul.getDateCreatedMillis()), soul.getNumItemsHeld());
 		soulInfo.setStyle(new Style().setItalic(true).setColor(TextFormatting.GRAY));
 		return soulInfo;
 	}

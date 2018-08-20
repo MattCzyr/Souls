@@ -1,6 +1,12 @@
 package com.chaosthedude.souls.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
 import com.google.common.collect.Multimap;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,11 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
 
 public class ItemUtils {
 
@@ -92,20 +93,19 @@ public class ItemUtils {
 	}
 
 	public static double getDamageDealtBy(ItemStack stack, EntityEquipmentSlot hand) {
-		double damage = -1D;
-
-		Multimap<String, AttributeModifier> attributes = stack.getAttributeModifiers(hand);
-		Collection<AttributeModifier> attackDamageAttributes = attributes
-				.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
-
-		for (AttributeModifier modifier : attackDamageAttributes) {
-			if (modifier.getName().equals(Strings.ATTACK_DAMAGE) || modifier.getName().equals(Strings.WEAPON_MODIFIER)
-					|| modifier.getName().equals(Strings.TOOL_MODIFIER)) {
-				damage = modifier.getAmount();
+		Multimap<String, AttributeModifier> multimap = stack.getItem().getItemAttributeModifiers(hand);
+		Collection<AttributeModifier> modifiers = multimap.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+		if (modifiers != null) {
+			for (AttributeModifier mod : modifiers) {
+				if (mod.getName().equals("Weapon modifier")) {
+					return mod.getAmount();
+				} else if (mod.getName().equals("Tool modifier")) {
+					return mod.getAmount();
+				}
 			}
 		}
 
-		return damage;
+		return 0D;
 	}
 
 	public static int getNumberOfItems(EntityPlayer player, Item item) {

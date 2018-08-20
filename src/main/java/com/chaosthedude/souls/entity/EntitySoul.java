@@ -328,14 +328,15 @@ public class EntitySoul extends EntityMob {
 
 	protected void setupArmor(Equipment equipment) {
 		ItemStack armor = ItemStack.EMPTY;
-		for (int i = 0; i <= 3; i++) {
-			if (ConfigHandler.useBestEquipment) {
+		if (ConfigHandler.useBestEquipment) {
+			for (int i = 1; i <= 4; i++) {
 				armor = ItemUtils.getHighestProtectionArmor(Equipment.getSlotFromEquipmentIndex(i), items);
-				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(4 - i), armor);
-			} else if (equipment != null) {
-				armor = equipment.getEquipmentFromIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i));
-				setItemStackToSlot(
-						Equipment.getSlotFromEquipmentIndex(Equipment.getEquipmentIndexFromPlayerArmorIndex(i)), armor);
+				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), armor);
+			}
+		} else {
+			for (int i = 1; i <= 4; i++) {
+				armor = equipment.getEquipmentFromIndex(i);
+				setItemStackToSlot(Equipment.getSlotFromEquipmentIndex(i), armor);
 			}
 		}
 	}

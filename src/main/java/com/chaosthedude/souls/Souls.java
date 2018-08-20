@@ -33,7 +33,7 @@ public class Souls {
 
 	public static final String MODID = "souls";
 	public static final String NAME = "Souls";
-	public static final String VERSION = "3.0.0";
+	public static final String VERSION = "3.0.1";
 
 	public static final Logger logger = LogManager.getLogger(MODID);
 

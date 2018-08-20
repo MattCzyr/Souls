@@ -1,4 +1,22 @@
 --------------------------------------------------
+ VERSION: 3.0.1 - 1.12.2
+--------------------------------------------------
+1.12.2
+  FIXES:
+  - Fixed Souls not equipping weapons and armor properly, including when souls.useBestEquipment is enabled.
+
+
+--------------------------------------------------
+ VERSION: 3.0.0 - 1.12.2
+--------------------------------------------------
+1.12.2
+  UPDATES:
+  - Updated to MC 1.12.2 (Forge #2544)
+  CHANGES:
+  - Removed souls.pickpocketGauntlet.loot config option (Pickpocket Gauntlet will now always have a recipe)
+
+
+--------------------------------------------------
  VERSION: 3.0.0 - 1.12.2
 --------------------------------------------------
 1.12.2
